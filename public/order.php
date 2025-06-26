@@ -118,6 +118,8 @@ if ($_SESSION['user_role'] === 'Admin' && !empty($items)) {
     $itemLogs = $logStmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+$orderVersion = sha1(json_encode($items));
+
 include __DIR__ . '/../src/header.php';
 ?>
 
@@ -527,4 +529,24 @@ function openAddProductModal(categoryId = 0) {
 }
 
 document.getElementById('openAddProduct').addEventListener('click', () => openAddProductModal());
+</script>
+
+<script>
+  let orderVersion = "<?= $orderVersion ?>";
+  async function checkOrderUpdates() {
+    try {
+      const resp = await fetch('api_order_version.php?table=<?= $table_id ?>');
+      const data = await resp.json();
+      if (orderVersion && data.version !== orderVersion) {
+        location.reload();
+      } else {
+        orderVersion = data.version;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    setInterval(checkOrderUpdates, 5000);
+  });
 </script>

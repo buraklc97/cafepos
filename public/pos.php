@@ -14,7 +14,10 @@ include __DIR__ . '/../src/header.php';
 <div class="row g-3">
   <?php foreach ($tables as $t): ?>
     <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-      <div class="card h-100 shadow-sm rounded-4 text-center position-relative" 
+      <div class="card h-100 shadow-sm rounded-4 text-center position-relative table-card"
+           data-id="<?= $t['id'] ?>"
+           data-status="<?= $t['status'] ?>"
+           data-opened-at="<?= htmlspecialchars($t['opened_at'] ?? '') ?>"
            style="cursor:pointer;"
            onclick="window.location='order.php?table=<?= $t['id'] ?>'">
         <div class="card-body py-4 px-2 d-flex flex-column justify-content-center align-items-center">
@@ -74,5 +77,37 @@ include __DIR__ . '/../src/header.php';
   document.addEventListener('DOMContentLoaded', () => {
     updateTimers();
     setInterval(updateTimers, 1000);
+    initTableWatcher();
   });
+
+  const tableStates = {};
+  function initTableWatcher() {
+    document.querySelectorAll('.table-card').forEach(card => {
+      tableStates[card.dataset.id] = {
+        status: card.dataset.status,
+        opened_at: card.dataset.openedAt || ''
+      };
+    });
+    setInterval(checkTableUpdates, 5000);
+  }
+
+  async function checkTableUpdates() {
+    try {
+      const resp = await fetch('api_tables_status.php');
+      const data = await resp.json();
+      let changed = false;
+      data.forEach(t => {
+        const prev = tableStates[t.id];
+        const opened = t.opened_at || '';
+        if (!prev || prev.status !== t.status || prev.opened_at !== opened) {
+          changed = true;
+        }
+      });
+      if (changed) {
+        location.reload();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
 </script>
