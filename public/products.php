@@ -18,10 +18,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['name'])) {
     $category_id = (int)$_POST['category_id'];
     $name        = trim($_POST['name']);
     $price       = (float)$_POST['price'];
+
+    // Görsel yükleme
+    $imagePath = null;
+    if (!empty($_FILES['image']['name'])) {
+        $uploadDir = __DIR__ . '/uploads';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+        $ext      = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+        $fileName = uniqid('prod_', true) . '.' . $ext;
+        $dest     = $uploadDir . '/' . $fileName;
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $dest)) {
+            $imagePath = 'uploads/' . $fileName;
+        }
+    }
+
     $pdo->prepare("
-        INSERT INTO products (category_id, name, price)
-        VALUES (?, ?, ?)
-    ")->execute([$category_id, $name, $price]);
+        INSERT INTO products (category_id, name, price, image)
+        VALUES (?, ?, ?, ?)
+    ")->execute([$category_id, $name, $price, $imagePath]);
     header('Location: products.php');
     exit;
 }
@@ -44,7 +60,7 @@ include __DIR__ . '/../src/header.php';
   <h1 class="text-center mb-4">Ürün Yönetimi</h1>
 
   <!-- Yeni Ürün Ekleme Formu -->
-  <form method="post" class="shadow-lg p-4 rounded-4 mb-4">
+  <form method="post" enctype="multipart/form-data" class="shadow-lg p-4 rounded-4 mb-4">
     <div class="mb-4">
       <label for="category_id" class="form-label">Kategori:</label>
       <select name="category_id" id="category_id" class="form-select" required>
@@ -61,6 +77,10 @@ include __DIR__ . '/../src/header.php';
     <div class="mb-4">
       <label for="price" class="form-label">Fiyat (₺):</label>
       <input type="number" step="0.01" name="price" id="price" class="form-control" required>
+    </div>
+    <div class="mb-4">
+      <label for="image" class="form-label">Ürün Görseli:</label>
+      <input type="file" name="image" id="image" class="form-control" accept="image/*">
     </div>
     <button type="submit" class="btn btn-primary btn-lg w-100">Ekle</button>
   </form>
