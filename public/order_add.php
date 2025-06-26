@@ -3,25 +3,54 @@
 require __DIR__ . '/../config/init.php';
 require __DIR__ . '/../src/auth.php';
 
-// Masa ID
-$table_id = (int)($_GET['table'] ?? 0);
-$category_id = (int)($_GET['category'] ?? 0);
+// Masa ID ve kategori
+$table_id    = (int)($_GET['table'] ?? 0);
+$category_id = isset($_GET['category']) ? (int)$_GET['category'] : 0;
 
-if (!$table_id || !$category_id) {
-    echo "<script>alert('Geçersiz işlem.');window.location='pos.php';</script>";
+if (!$table_id) {
+    echo "<script>alert('Ge\xE7ersiz i\x15Flem.');window.location='pos.php';</script>";
     exit;
 }
 
-// Ürünleri kategoriye göre çek
-$query = "SELECT p.id, p.name, p.price, p.image FROM products p WHERE p.category_id = ?";
+// Kategorileri al
+$categories = $pdo->query("SELECT * FROM categories ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
+
+// Se\xE7ili kategoriye g\xF6re \xFCr\xFCnleri getir
+$query = "SELECT p.id, p.name, p.price, p.image FROM products p";
+$params = [];
+if ($category_id) {
+    $query .= " WHERE p.category_id = ?";
+    $params[] = $category_id;
+}
 $stmt = $pdo->prepare($query);
-$stmt->execute([$category_id]);
+$stmt->execute($params);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
 <style>
 /* Ürün Modal Stilleri */
+.category-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.category-btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    border: none;
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    background: var(--btn-bg);
+    color: #fff;
+}
+
+.category-btn.active {
+    background: var(--success);
+}
+
 .product-search {
     background: var(--input-bg);
     border: 2px solid var(--border-color);
@@ -250,6 +279,16 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 </style>
 
+<!-- Kategoriler -->
+<div class="category-scroll mb-3">
+    <button class="category-btn" data-category="0">Tüm Ürünler</button>
+    <?php foreach ($categories as $cat): ?>
+        <button class="category-btn<?= $category_id == $cat['id'] ? ' active' : '' ?>" data-category="<?= $cat['id'] ?>">
+            <?= htmlspecialchars($cat['name']) ?>
+        </button>
+    <?php endforeach; ?>
+</div>
+
 <!-- Arama Kutusu -->
 <div class="row mb-3 justify-content-center">
     <div class="col-12">
@@ -295,54 +334,3 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endforeach; ?>
     </div>
 <?php endif; ?>
-
-<script>
-// Arama filtrasyonu
-document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('productSearch');
-    if (searchInput) {
-        searchInput.addEventListener('input', function () {
-            const term = this.value.toLowerCase();
-            document.querySelectorAll('#productGrid .product-item').forEach(function (item) {
-                const name = item.dataset.name.toLowerCase();
-                item.style.display = name.includes(term) ? '' : 'none';
-            });
-        });
-    }
-    
-    // Ürün kartlarına hover efekti
-    document.querySelectorAll('.product-card').forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-4px)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-    
-    // Form submit sonrası modal kapatma
-    document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', function() {
-            // Modal'ı kapat
-            const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
-            if (modal) {
-                modal.hide();
-            }
-        });
-    });
-
-    // Adet arttırma/azaltma butonları
-    document.querySelectorAll('.quantity-box').forEach(box => {
-        const input = box.querySelector('.quantity-input');
-        box.querySelector('.minus').addEventListener('click', () => {
-            const val = parseInt(input.value) || 1;
-            input.value = Math.max(1, val - 1);
-        });
-        box.querySelector('.plus').addEventListener('click', () => {
-            const val = parseInt(input.value) || 1;
-            input.value = val + 1;
-        });
-    });
-});
-</script>
