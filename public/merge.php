@@ -75,8 +75,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                      VALUES (?, ?, ?)"
                 )->execute([$srcOrderId, $tgtOrderId, $_SESSION['user_id']]);
 
-                // 3) Kaynak siparişi sil
-                $pdo->prepare("DELETE FROM orders WHERE id = ?")->execute([$srcOrderId]);
+                // 3) Kaynak siparişi silmek yerine durumu 'closed' yap
+                // Böylece table_merges kaydı FOREIGN KEY nedeniyle silinmez
+                $pdo->prepare(
+                    "UPDATE orders SET status = 'closed', closed_at = NOW() WHERE id = ?"
+                )->execute([$srcOrderId]);
 
                 // 4) Kaynak masayı boşalt
                 $pdo->prepare(
