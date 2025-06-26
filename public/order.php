@@ -297,6 +297,14 @@ main.container {
     background: var(--container-bg);
     padding: 2rem;
     border-radius: 0 0 20px 20px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+    .modal-body {
+        max-height: 80dvh;
+    }
 }
 
 /* Responsive Design */
@@ -454,7 +462,7 @@ main.container {
 
 <!-- Popup Modal -->
 <div class="modal" tabindex="-1" id="addProductModal">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
