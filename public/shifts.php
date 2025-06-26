@@ -116,8 +116,8 @@ include __DIR__ . '/../src/header.php';
         <?php foreach ($shifts as $s): ?>
           <tr onclick="window.location='shift_detail.php?id=<?= $s['id'] ?>'" style="cursor:pointer;">
             <td><?= htmlspecialchars($s['id'], ENT_QUOTES, 'UTF-8') ?></td>
-            <td><?= htmlspecialchars($s['opened_at'], ENT_QUOTES, 'UTF-8') ?></td>
-            <td><?= $s['closed_at'] ? htmlspecialchars($s['closed_at'], ENT_QUOTES, 'UTF-8') : '-' ?></td>
+			<td><?= htmlspecialchars($s['opened_at'], ENT_QUOTES, 'UTF-8') ?></td>
+            <td><?= htmlspecialchars($s['closed_at'] ?? '-', ENT_QUOTES, 'UTF-8') ?></td>
             <td><?= $s['auto_closed'] ? 'Evet' : 'Hayır' ?></td>
             <td><?= htmlspecialchars($s['opener'] ?? '-', ENT_QUOTES, 'UTF-8') ?></td>
             <td><?= htmlspecialchars($s['closer'] ?? '-', ENT_QUOTES, 'UTF-8') ?></td>
