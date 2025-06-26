@@ -135,8 +135,13 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 .qty-btn {
+<<<<<<< ah8m88-codex/ürün-adet-seçme-yerini-görsel-olarak-geliştirme
     width: 28px;
     height: 28px;
+=======
+    width: 32px;
+    height: 32px;
+>>>>>>> main
     border: none;
     border-radius: 8px;
     color: #fff;
