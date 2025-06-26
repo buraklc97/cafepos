@@ -51,7 +51,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
   searchInput.addEventListener('input', function() {
     const term = this.value.toLowerCase();
     document.querySelectorAll('#productGrid .product-item').forEach(item => {
-      const name = item.querySelector('[data-name]').dataset.name.toLowerCase();
+      const name = item.dataset.name.toLowerCase();
       item.style.display = name.includes(term) ? '' : 'none';
     });
   });
