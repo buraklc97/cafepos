@@ -21,16 +21,6 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!-- Ürün Kartları (Görsellerle) -->
-<html lang="tr" data-theme="dark">
-
-<head>
-  <meta charset="UTF-8">
-  <!-- Bootstrap ve diğer stiller -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/styleson.css?v=20250625">
-</head>
-
 <section class="mb-4">
     <div class="row g-3">
         <?php foreach ($products as $p): ?>
