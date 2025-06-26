@@ -21,11 +21,16 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!-- Ürün Kartları (Görsellerle) -->
+<div class="row mb-3 justify-content-center">
+    <div class="col-10 col-md-8">
+        <input type="text" id="productSearch" class="form-control" placeholder="Ürün ara...">
+    </div>
+</div>
 <section class="mb-4">
-    <div class="row g-3">
+    <div class="row g-3" id="productGrid">
         <?php foreach ($products as $p): ?>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <div class="card shadow-sm rounded-4" style="cursor: pointer;">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 product-item">
+                <div class="card shadow-sm rounded-4" style="cursor: pointer;" data-name="<?= htmlspecialchars($p['name']) ?>">
                     <img src="<?= htmlspecialchars($p['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($p['name']) ?>" style="height: 200px; object-fit: cover;">
                     <div class="card-body text-center">
                         <h5 class="card-title"><?= htmlspecialchars($p['name']) ?></h5>
@@ -40,3 +45,14 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endforeach; ?>
     </div>
 </section>
+
+<script>
+  const searchInput = document.getElementById('productSearch');
+  searchInput.addEventListener('input', function() {
+    const term = this.value.toLowerCase();
+    document.querySelectorAll('#productGrid .product-item').forEach(item => {
+      const name = item.querySelector('[data-name]').dataset.name.toLowerCase();
+      item.style.display = name.includes(term) ? '' : 'none';
+    });
+  });
+</script>
