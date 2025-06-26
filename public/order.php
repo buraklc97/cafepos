@@ -129,6 +129,9 @@ include __DIR__ . '/../src/header.php';
 
 <style>
 /* Garson Sipariş Sayfası Özel Stilleri */
+main.container {
+    max-width: 1000px;
+}
 .order-header {
     background: linear-gradient(135deg, var(--header-bg) 0%, rgba(37, 99, 235, 0.8) 100%);
     color: white;
