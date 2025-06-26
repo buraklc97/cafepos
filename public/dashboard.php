@@ -3,7 +3,11 @@
 require __DIR__ . '/../config/init.php';
 require __DIR__ . '/../src/auth.php';
 require __DIR__ . '/../src/logger.php';
-requireRole(['Admin']);
+// Admin olmayan kullanıcıları POS ekranına yönlendir
+if (!isLoggedIn() || currentUserRole() !== 'Admin') {
+    header('Location: pos.php');
+    exit;
+}
 
 // Gün Başı/Vardiya durumu kontrolü
 $openShift = $pdo->query(
