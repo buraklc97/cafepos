@@ -107,7 +107,7 @@ if (isset($_GET['delete_item'])) {
 $items = $pdo->prepare("SELECT oi.id, oi.quantity, oi.unit_price, p.name FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?");
 $items->execute([$order_id]);
 $items = $items->fetchAll(PDO::FETCH_ASSOC);
-$products = $pdo->query("SELECT * FROM products ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
+$products = $pdo->query("SELECT * FROM products ORDER BY sort_order IS NULL, sort_order, id")->fetchAll(PDO::FETCH_ASSOC);
 
 // Silinen ürün loglarını çek (sadece admin ve aktif ürün varsa)
 $itemLogs = [];
