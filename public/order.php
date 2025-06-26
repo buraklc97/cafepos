@@ -472,6 +472,19 @@ include __DIR__ . '/../src/header.php';
 <?php include __DIR__ . '/../src/footer.php'; ?>
 
 <script>
+function initQuantityButtons(container) {
+    container.querySelectorAll('.quantity-box').forEach(box => {
+        const input = box.querySelector('.quantity-input');
+        box.querySelector('.minus').addEventListener('click', () => {
+            const val = parseInt(input.value) || 1;
+            input.value = Math.max(1, val - 1);
+        });
+        box.querySelector('.plus').addEventListener('click', () => {
+            const val = parseInt(input.value) || 1;
+            input.value = val + 1;
+        });
+    });
+}
 // Kategori butonlarına tıklanıldığında popup modal'ını aç ve AJAX ile ürünleri yükle
 const categoryButtons = document.querySelectorAll('[data-category]');
 categoryButtons.forEach(button => {
@@ -506,6 +519,8 @@ categoryButtons.forEach(button => {
                         });
                     });
                 }
+
+                initQuantityButtons(modalBody);
             })
             .catch(error => {
                 console.error('Hata:', error);

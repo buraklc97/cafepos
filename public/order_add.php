@@ -118,13 +118,41 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 .quantity-input {
-    width: 70px;
+    width: 60px;
     padding: 0.5rem;
     border: 2px solid var(--border-color);
     border-radius: 8px;
     text-align: center;
     font-size: 1rem;
+    margin-bottom: 0;
+}
+
+.quantity-box {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
     margin-bottom: 0.5rem;
+}
+
+.qty-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.qty-btn.minus {
+    background: var(--danger);
+}
+
+.qty-btn.plus {
+    background: var(--success);
 }
 
 .add-button:hover {
@@ -203,6 +231,18 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         font-size: 0.9rem;
     }
 
+    .qty-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 0.9rem;
+    }
+
+    .quantity-input {
+        width: 45px;
+        padding: 0.4rem;
+        font-size: 0.9rem;
+    }
+
     .add-button .btn-text {
         display: none;
     }
@@ -239,7 +279,11 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="product-price"><?= number_format($p['price'], 2) ?> ₺</div>
                     <form method="post" action="order.php?table=<?= $table_id ?>">
                         <input type="hidden" name="product_id" value="<?= $p['id'] ?>">
-                        <input type="number" name="quantity" class="quantity-input" min="1" value="1">
+                        <div class="quantity-box">
+                            <button type="button" class="qty-btn minus">-</button>
+                            <input type="number" name="quantity" class="quantity-input" min="1" value="1">
+                            <button type="button" class="qty-btn plus">+</button>
+                        </div>
                         <button type="submit" name="add_product" class="add-button">
                             <span class="material-icons">add_shopping_cart</span>
                             <span class="btn-text">Sepete Ekle</span>
@@ -284,6 +328,19 @@ document.addEventListener('DOMContentLoaded', function () {
             if (modal) {
                 modal.hide();
             }
+        });
+    });
+
+    // Adet arttırma/azaltma butonları
+    document.querySelectorAll('.quantity-box').forEach(box => {
+        const input = box.querySelector('.quantity-input');
+        box.querySelector('.minus').addEventListener('click', () => {
+            const val = parseInt(input.value) || 1;
+            input.value = Math.max(1, val - 1);
+        });
+        box.querySelector('.plus').addEventListener('click', () => {
+            const val = parseInt(input.value) || 1;
+            input.value = val + 1;
         });
     });
 });
