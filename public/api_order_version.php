@@ -2,9 +2,10 @@
 require __DIR__ . '/../config/init.php';
 require __DIR__ . '/../src/auth.php';
 requireRole(['Admin', 'Garson', 'Garson (Yetkili)']);
+$role = currentUserRole();
 
 $table_id = (int)($_GET['table'] ?? 0);
-if (!$table_id) {
+if (!$table_id || ($table_id == 1 && !in_array($role, ['Admin','Garson (Yetkili)']))) {
     http_response_code(400);
     echo json_encode(['error' => 'invalid table']);
     exit;

@@ -7,7 +7,7 @@ requireRole(['Admin','Garson']);
 
 // Kaynak masa ID’si
 $fromTable = (int)($_GET['from'] ?? 0);
-if (!$fromTable) {
+if (!$fromTable || $fromTable == 1) {
     header('Location: pos.php');
     exit;
 }
@@ -35,13 +35,17 @@ $originalOpenedAt = $stmtOpen->fetchColumn();
 $tables = $pdo->query(
   "SELECT id, name, status
      FROM pos_tables
-    WHERE id != {$fromTable} AND status = 'empty'
+    WHERE id != {$fromTable} AND id != 1 AND status = 'empty'
     ORDER BY name"
 )->fetchAll(PDO::FETCH_ASSOC);
 
 // Transfer işlemi
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['to_table'])) {
     $toTable = (int)$_POST['to_table'];
+    if ($toTable == 1) {
+        echo "<script>alert('Kasa taşınamaz.');window.location='pos.php';</script>";
+        exit;
+    }
 
     // Siparişi güncelle
     $pdo->prepare("UPDATE orders SET table_id = ? WHERE id = ?")
