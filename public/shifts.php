@@ -22,6 +22,14 @@ if (isset($_POST['open_shift']) && !$openShift) {
 
 // 3) Gün Sonu (Close) işlemi
 if (isset($_POST['close_shift']) && $openShift) {
+    // Gün sonu alınmadan önce tüm masaların boş olup olmadığını kontrol et
+    $occupied = $pdo->query("SELECT COUNT(*) FROM pos_tables WHERE status = 'occupied'")
+                   ->fetchColumn();
+    if ($occupied > 0) {
+        echo "<script>alert('Gün sonu için tüm masaların boş olması gerekir.');window.location='shifts.php';</script>";
+        exit;
+    }
+
     $stmt = $pdo->prepare(
         "UPDATE shifts
            SET closed_at = NOW(),
@@ -80,14 +88,14 @@ include __DIR__ . '/../src/header.php';
   <div class="mb-4 text-center">
     <?php if (!$openShift): ?>
       <form method="post" class="d-inline">
-        <button type="submit" name="open_shift" class="btn btn-success btn-lg">
+        <button type="submit" name="open_shift" class="btn btn-success btn-lg" onclick="return confirm('Gün Başı almak istediğinize emin misiniz?')">
           <span class="material-icons">event</span> Gün Başı Al
         </button>
       </form>
     <?php else: ?>
       <p><strong>Açık Shift:</strong> <?= htmlspecialchars($openShift['opened_at'] ?: '-', ENT_QUOTES, 'UTF-8') ?> (<?= htmlspecialchars($openShift['opened_by'] ?? '-', ENT_QUOTES, 'UTF-8') ?>)</p>
       <form method="post" class="d-inline">
-        <button type="submit" name="close_shift" class="btn btn-danger btn-lg">
+        <button type="submit" name="close_shift" class="btn btn-danger btn-lg" onclick="return confirm('Gün Sonu almak istediğinize emin misiniz?')">
           <span class="material-icons">event_busy</span> Gün Sonu Al
         </button>
       </form>
