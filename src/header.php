@@ -29,11 +29,34 @@ $toggleTheme = $currentTheme === 'light' ? 'dark' : 'light';
 <head>
   <meta charset="UTF-8">
   <title>Cafe POS</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <!-- Bootstrap & Material Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/styleson.css?v=20252320625">
+  <script>
+    // Disable pinch zoom on mobile devices
+    document.addEventListener('touchstart', function (e) {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+    document.addEventListener('touchmove', function (e) {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    // Prevent double-tap zoom on iOS
+    var lastTouchEnd = 0;
+    document.addEventListener('touchend', function (e) {
+      var now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, false);
+  </script>
 </head>
 <body>
 <?php if ($username): ?>
