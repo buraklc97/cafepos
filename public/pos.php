@@ -76,8 +76,8 @@ include __DIR__ . '/../src/header.php';
                 <span class="d-none d-sm-inline"> Birleştir</span>
               </a>
             <?php endif; ?>
-          </div>
-          <?php endif; ?>
+        </div>
+        <?php endif; ?>
         </div>
       <?php endif; ?>
     </div>
