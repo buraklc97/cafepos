@@ -329,6 +329,11 @@ input:focus, select:focus, textarea:focus, .form-control:focus, .form-select:foc
   border: 2px solid var(--border-color);
 }
 
+.form-label,
+.form-check-label {
+  color: var(--text) !important;
+}
+
 /* Butonlar - Geliştirilmiş */
 .btn, button, input[type=submit] {
   border-radius: 12px !important;
