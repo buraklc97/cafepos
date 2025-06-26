@@ -13,6 +13,16 @@ if ($role !== 'Admin' && $role !== 'Garson (Yetkili)') {
 $query .= " ORDER BY id";
 $tables = $pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
 $tables = array_values($tables);
+// Kasa kaydini ayir
+$kasa = null;
+foreach ($tables as $idx => $tb) {
+    if ($tb['id'] == 1) {
+        $kasa = $tb;
+        unset($tables[$idx]);
+        $tables = array_values($tables);
+        break;
+    }
+}
 
 // Kaç masa dolu? Birleştirme butonuna izin vermek için hesapla
 $occupiedCount = 0;
@@ -24,20 +34,25 @@ foreach ($tables as $tb) {
 
 include __DIR__ . '/../src/header.php';
 ?>
+<?php if ($kasa): ?>
+  <div class="row justify-content-center mb-4">
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+      <div class="card h-100 shadow-sm rounded-4 text-center position-relative table-card"
+           data-id="1" data-status="<?= $kasa['status'] ?>" style="cursor:pointer;"
+           onclick="window.location='order.php?table=1'">
+        <div class="card-body py-4 px-2 d-flex flex-column justify-content-center align-items-center">
+          <span class="material-icons mb-2" style="font-size:2.7rem; color:#007bff;">point_of_sale</span>
+          <div class="fw-bold" style="font-size:1.1rem;"><?= htmlspecialchars($kasa['name']) ?></div>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php endif; ?>
+
 <h2 class="my-3 text-center">Masalar</h2>
 <div class="row g-3">
   <?php foreach ($tables as $t): ?>
     <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-      <?php if ($t['id'] == 1): ?>
-        <div class="card h-100 shadow-sm rounded-4 text-center position-relative table-card"
-             data-id="1" data-status="<?= $t['status'] ?>" style="cursor:pointer;"
-             onclick="window.location='order.php?table=1'">
-          <div class="card-body py-4 px-2 d-flex flex-column justify-content-center align-items-center">
-            <span class="material-icons mb-2" style="font-size:2.7rem; color:#007bff;">point_of_sale</span>
-            <div class="fw-bold" style="font-size:1.1rem;"><?= htmlspecialchars($t['name']) ?></div>
-          </div>
-        </div>
-      <?php else: ?>
         <div class="card h-100 shadow-sm rounded-4 text-center position-relative table-card"
              data-id="<?= $t['id'] ?>"
              data-status="<?= $t['status'] ?>"
@@ -79,7 +94,6 @@ include __DIR__ . '/../src/header.php';
         </div>
         <?php endif; ?>
         </div>
-      <?php endif; ?>
     </div>
   <?php endforeach; ?>
 </div>
