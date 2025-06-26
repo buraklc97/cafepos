@@ -25,10 +25,11 @@ $cats = $pdo->query('SELECT * FROM categories ORDER BY name')->fetchAll();
 
 // Güncelleme
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $category_id = (int)$_POST['category_id'];
-    $name        = trim($_POST['name']);
-    $price       = (float)$_POST['price'];
-    $imagePath   = $product['image'];
+    $category_id  = (int)$_POST['category_id'];
+    $name         = trim($_POST['name']);
+    $price        = (float)$_POST['price'];
+    $imagePath    = $product['image'];
+    $removeImage  = isset($_POST['delete_image']);
 
     if (!empty($_FILES['image']['name'])) {
         $uploadDir = __DIR__ . '/uploads';
@@ -40,7 +41,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $dest     = $uploadDir . '/' . $fileName;
         if (move_uploaded_file($_FILES['image']['tmp_name'], $dest)) {
             $imagePath = 'uploads/' . $fileName;
+            // Yeni görsel yüklendiğinde eski dosyayı kaldır
+            if ($product['image']) {
+                $oldFile = __DIR__ . '/' . $product['image'];
+                if (is_file($oldFile)) {
+                    unlink($oldFile);
+                }
+            }
         }
+    } elseif ($removeImage) {
+        // Sadece mevcut görseli kaldır
+        if ($product['image']) {
+            $oldFile = __DIR__ . '/' . $product['image'];
+            if (is_file($oldFile)) {
+                unlink($oldFile);
+            }
+        }
+        $imagePath = null;
     }
 
     $upd = $pdo->prepare('UPDATE products SET category_id = ?, name = ?, price = ?, image = ? WHERE id = ?');
@@ -77,6 +94,10 @@ include __DIR__ . '/../src/header.php';
     <?php if ($product['image']): ?>
       <div class="mb-2">
         <img src="<?= htmlspecialchars($product['image']) ?>" alt="Ürün Görseli" style="max-height: 150px;" class="img-thumbnail">
+      </div>
+      <div class="form-check d-flex align-items-center gap-2 mb-2">
+        <input class="form-check-input" type="checkbox" name="delete_image" id="delete_image">
+        <label class="form-check-label" for="delete_image">Mevcut görseli sil</label>
       </div>
     <?php endif; ?>
     <input type="file" name="image" id="image" class="form-control" accept="image/*">
