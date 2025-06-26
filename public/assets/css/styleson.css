@@ -390,6 +390,12 @@ input:focus, select:focus, textarea:focus, .form-control:focus, .form-select:foc
   color: white !important;
 }
 
+/* Selected state for toggle buttons */
+.btn-check:checked + .btn-outline-primary {
+  background: var(--btn-bg) !important;
+  color: white !important;
+}
+
 /* Tablo - Geliştirilmiş */
 .table, table {
   background: var(--container-bg) !important;
