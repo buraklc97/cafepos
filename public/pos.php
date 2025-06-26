@@ -50,7 +50,7 @@ include __DIR__ . '/../src/header.php';
 <?php endif; ?>
 
 <h2 class="my-3 text-center">Masalar</h2>
-<div class="row row-cols-lg-5 g-3">
+<div class="row row-cols-lg-10 g-3">
   <?php foreach ($tables as $t): ?>
     <div class="col-6 col-sm-6 col-md-4">
         <div class="card h-100 shadow-sm rounded-4 text-center position-relative table-card"
