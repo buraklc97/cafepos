@@ -214,7 +214,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php foreach ($products as $p): ?>
             <div class="product-card product-item" data-name="<?= htmlspecialchars($p['name']) ?>">
                 <div class="product-image">
-                    <?php if (!empty($p['image']) && file_exists($p['image'])): ?>
+                    <?php if (!empty($p['image'])): ?>
                         <img src="<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['name']) ?>">
                     <?php else: ?>
                         <span class="material-icons">restaurant</span>
