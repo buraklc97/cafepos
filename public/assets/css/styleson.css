@@ -521,6 +521,14 @@ input:focus, select:focus, textarea:focus, .form-control:focus, .form-select:foc
 .card-footer .material-icons {
   color: inherit !important;
   opacity: 1 !important;
+  font-size: 1rem !important;
+}
+
+/* Smaller action buttons on POS table cards */
+.table-card .card-footer .btn {
+  font-size: 0.75rem !important;
+  padding: 0.25rem 0.5rem !important;
+  line-height: 1.2 !important;
 }
 
 /* Action Buttons */
@@ -849,4 +857,11 @@ html[data-theme="dark"] .navbar .d-flex button {
     -webkit-text-size-adjust: 100%;
     -webkit-overflow-scrolling: touch;
   }
+}
+
+@media (min-width: 992px) {
+  /*
+   * Previously custom rule for 10 columns. Removed because Bootstrap
+   * already provides `row-cols-lg-5` for five columns on large screens.
+   */
 }
