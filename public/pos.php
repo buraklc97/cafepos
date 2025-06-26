@@ -41,8 +41,12 @@ foreach ($tables as $tb) {
     }
 }
 
-include __DIR__ . '/../src/header.php';
+$partial = isset($_GET['partial']) && $_GET['partial'] == '1';
+if (!$partial) {
+    include __DIR__ . '/../src/header.php';
+}
 ?>
+<div id="tablesWrapper">
 <?php if ($kasa): ?>
   <div class="row justify-content-center mb-4">
     <div class="col-6 col-sm-4 col-md-3 col-lg-2">
@@ -59,7 +63,7 @@ include __DIR__ . '/../src/header.php';
 <?php endif; ?>
 
 <h2 class="my-3 text-center">Masalar</h2>
-<div class="row row-cols-lg-10 g-3">
+<div id="tablesRow" class="row row-cols-lg-10 g-3">
   <?php foreach ($tables as $t): ?>
     <div class="col-6 col-sm-6 col-md-4">
         <div class="card h-100 shadow-sm rounded-4 text-center position-relative table-card"
@@ -106,10 +110,11 @@ include __DIR__ . '/../src/header.php';
     </div>
   <?php endforeach; ?>
 </div>
-<?php include __DIR__ . '/../src/footer.php'; ?>
+</div>
+<?php if (!$partial) { include __DIR__ . '/../src/footer.php'; ?>
 
 <script>
-  const currentTablesVersion = '<?= $tablesVersion ?>';
+  let currentTablesVersion = '<?= $tablesVersion ?>';
   // ISO formatı ile gelen timestamp'leri JS Date objesine dönüştürmek için
   function parseDateTime(dt) {
     return new Date(dt.replace(' ', 'T'));
@@ -145,10 +150,28 @@ include __DIR__ . '/../src/header.php';
       const resp = await fetch('api_tables_status.php', { cache: 'no-store' });
       const data = await resp.json();
       if (data.version !== currentTablesVersion) {
-        location.reload();
+        reloadTables(data.version);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  async function reloadTables(newVersion) {
+    try {
+      const resp = await fetch('pos.php?partial=1', { cache: 'no-store' });
+      const html = await resp.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const wrapper = doc.querySelector('#tablesWrapper');
+      if (wrapper) {
+        document.getElementById('tablesWrapper').innerHTML = wrapper.innerHTML;
+        updateTimers();
+        currentTablesVersion = newVersion;
       }
     } catch (e) {
       console.error(e);
     }
   }
 </script>
+<?php } ?>
+
