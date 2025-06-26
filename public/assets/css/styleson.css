@@ -738,6 +738,18 @@ html[data-theme="dark"] .navbar .d-flex button {
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
+/* Modal İçeriği ve Başlık - Dark mode uyumlu */
+#addProductModal .modal-content,
+#addProductModal .modal-header,
+#addProductModal .modal-body {
+  background-color: var(--container-bg) !important;
+  color: var(--text) !important;
+}
+
+#addProductModal .btn-close {
+  filter: invert(1);
+}
+
 /* Buton Hover Efekti */
 #addProductModal .btn-success:hover {
   background-color: var(--btn-bg) !important;

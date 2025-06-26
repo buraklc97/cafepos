@@ -174,12 +174,25 @@ include __DIR__ . '/../src/header.php';
       // AJAX ile order_add.php'yi kategoriye göre yükle
       fetch('order_add.php?table=<?= $table_id ?>&category=' + categoryId)
         .then(response => response.text())
-        .then(data => {
-          document.getElementById('modal-body-content').innerHTML = data;
-          var modal = new bootstrap.Modal(document.getElementById('addProductModal'), {
+        .then(html => {
+          const modalBody = document.getElementById('modal-body-content');
+          modalBody.innerHTML = html;
+          const modal = new bootstrap.Modal(document.getElementById('addProductModal'), {
             keyboard: false
           });
           modal.show();
+
+          // Arama çubuğu filtrasyonu
+          const searchInput = modalBody.querySelector('#productSearch');
+          if (searchInput) {
+            searchInput.addEventListener('input', function() {
+              const term = this.value.toLowerCase();
+              modalBody.querySelectorAll('#productGrid .product-item').forEach(item => {
+                const name = item.dataset.name.toLowerCase();
+                item.style.display = name.includes(term) ? '' : 'none';
+              });
+            });
+          }
         })
         .catch(error => {
           console.error('Hata:', error);
