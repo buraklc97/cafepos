@@ -414,7 +414,7 @@ include __DIR__ . '/../src/header.php';
     <?php endif; ?>
 </div>
 
-<?php if (!empty($items)): ?>
+<?php if (!empty($items) && (($_SESSION['user_role'] === 'Admin') || ($_SESSION['user_role'] === 'Garson (Yetkili)'))): ?>
 <a href="payment.php?order=<?= $order_id ?>" class="payment-button">
     <span class="material-icons">payment</span>
     Ödeme Al & Masayı Kapat
