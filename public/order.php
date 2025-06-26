@@ -3,6 +3,7 @@
 require __DIR__ . '/../config/init.php';
 require __DIR__ . '/../src/auth.php';
 requireRole(['Admin', 'Garson', 'Garson (Yetkili)']);
+require_once __DIR__ . '/../src/logger.php';
 
 // Masa ID
 $table_id = (int)($_GET['table'] ?? 0);
@@ -71,19 +72,28 @@ if (isset($_GET['delete_item'])) {
     }
 
     // Admin ve Garson (Yetkili) için işlem yapılacak
-    $stmt = $pdo->prepare("SELECT quantity FROM order_items WHERE id = ?");
-    $stmt->execute([$item_id]);
-    $item = $stmt->fetch();
-    if ($item && $item['quantity'] > 1) {
+    $stmtInfo = $pdo->prepare(
+        "SELECT oi.quantity, p.name, oi.order_id FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.id = ?"
+    );
+    $stmtInfo->execute([$item_id]);
+    $info = $stmtInfo->fetch(PDO::FETCH_ASSOC);
+
+    if ($info && $info['quantity'] > 1) {
         $pdo->prepare("UPDATE order_items SET quantity = quantity - 1 WHERE id = ?")->execute([$item_id]);
     } else {
         $pdo->prepare("DELETE FROM order_items WHERE id = ?")->execute([$item_id]);
+    }
+
+    if ($info) {
+        $detail = "Sipariş {$info['order_id']} masa {$table_id} ürünü silindi: {$info['name']}";
+        logAction('remove_item', $detail);
     }
 
     $cnt = $pdo->prepare("SELECT COUNT(*) FROM order_items WHERE order_id = ?");
     $cnt->execute([$order_id]);
     if ($cnt->fetchColumn() == 0) {
         $pdo->prepare("UPDATE pos_tables SET status = 'empty', opened_at = NULL WHERE id = ?")->execute([$table_id]);
+        $pdo->prepare("UPDATE orders SET status = 'closed', closed_at = NOW() WHERE id = ?")->execute([$order_id]);
     }
 
     header("Location: order.php?table={$table_id}");
@@ -95,6 +105,20 @@ $items = $pdo->prepare("SELECT oi.id, oi.quantity, oi.unit_price, p.name FROM or
 $items->execute([$order_id]);
 $items = $items->fetchAll(PDO::FETCH_ASSOC);
 $products = $pdo->query("SELECT * FROM products ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
+
+// Silinen ürün loglarını çek (sadece admin ve aktif ürün varsa)
+$itemLogs = [];
+if ($_SESSION['user_role'] === 'Admin' && !empty($items)) {
+    $logStmt = $pdo->prepare(
+        "SELECT l.created_at, l.details, u.username
+           FROM logs l
+      LEFT JOIN users u ON l.user_id = u.id
+          WHERE l.action='remove_item' AND l.details LIKE ?
+       ORDER BY l.created_at DESC"
+    );
+    $logStmt->execute(['%Sipariş ' . $order_id . '%']);
+    $itemLogs = $logStmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 include __DIR__ . '/../src/header.php';
 ?>
@@ -449,6 +473,30 @@ include __DIR__ . '/../src/header.php';
     <span class="material-icons">payment</span>
     Ödeme Al & Masayı Kapat
 </a>
+<?php endif; ?>
+
+<?php if ($_SESSION['user_role'] === 'Admin' && !empty($itemLogs)): ?>
+<div class="cart-section mt-4">
+    <h3 class="mb-3">Silinen Ürünler</h3>
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Zaman</th>
+                <th>Kullanıcı</th>
+                <th>Detay</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($itemLogs as $log): ?>
+                <tr>
+                    <td><?= htmlspecialchars($log['created_at']) ?></td>
+                    <td><?= htmlspecialchars($log['username'] ?? '-') ?></td>
+                    <td><?= htmlspecialchars($log['details']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 <?php endif; ?>
 
 <!-- Popup Modal -->
