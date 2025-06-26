@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 unlink($oldFile);
             }
         }
-        $imagePath = null;
+        $imagePath = null;	
     }
 
     $upd = $pdo->prepare('UPDATE products SET category_id = ?, name = ?, price = ?, image = ? WHERE id = ?');
@@ -98,7 +98,7 @@ include __DIR__ . '/../src/header.php';
       <div class="form-check d-flex align-items-center gap-2 mb-2">
         <input class="form-check-input" type="checkbox" name="delete_image" id="delete_image">
         <label class="form-check-label" for="delete_image">Mevcut görseli sil</label>
-      </div>
+      </div>  
     <?php endif; ?>
     <input type="file" name="image" id="image" class="form-control" accept="image/*">
   </div>

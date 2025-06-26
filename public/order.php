@@ -92,7 +92,7 @@ if (isset($_GET['delete_item'])) {
         logAction('remove_item', $detail);
     }
 
-    $cnt = $pdo->prepare("SELECT COUNT(*) FROM order_items WHERE order_id = ?");
+	$cnt = $pdo->prepare("SELECT COUNT(*) FROM order_items WHERE order_id = ?");
     $cnt->execute([$order_id]);
     if ($cnt->fetchColumn() == 0) {
         $pdo->prepare("UPDATE pos_tables SET status = 'empty', opened_at = NULL WHERE id = ?")->execute([$table_id]);
@@ -179,7 +179,6 @@ include __DIR__ . '/../src/header.php';
     margin-bottom: 2rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
-
 
 .cart-section {
     background: var(--container-bg);
@@ -307,7 +306,6 @@ include __DIR__ . '/../src/header.php';
     .order-header h1 {
         font-size: 1.5rem;
     }
-    
     
     .cart-section {
         padding: 1.5rem;
@@ -488,7 +486,6 @@ function initQuantityButtons(container) {
         });
     });
 }
-
 function attachModalEvents(container) {
     const searchInput = container.querySelector('#productSearch');
     if (searchInput) {
@@ -498,7 +495,7 @@ function attachModalEvents(container) {
                 const name = item.dataset.name.toLowerCase();
                 item.style.display = name.includes(term) ? '' : 'none';
             });
-        });
+    });
     }
 
     container.querySelectorAll('.category-btn').forEach(btn => {
@@ -555,3 +552,4 @@ document.getElementById('openAddProduct').addEventListener('click', () => openAd
     setInterval(checkOrderUpdates, 5000);
   });
 </script>
+

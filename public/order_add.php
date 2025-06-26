@@ -267,12 +267,12 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         margin-bottom: 0.75rem;
     }
     
-    .add-button {
+	.add-button {
         padding: 0.5rem 1rem;
         font-size: 0.9rem;
     }
-
-    .qty-btn {
+	
+	.qty-btn {
         width: 24px;
         height: 24px;
         font-size: 0.9rem;
@@ -328,7 +328,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="product-info">
                     <div class="product-name"><?= htmlspecialchars($p['name']) ?></div>
                     <div class="product-price"><?= number_format($p['price'], 2) ?> ₺</div>
-                    <form method="post" action="order.php?table=<?= $table_id ?>">
+					<form method="post" action="order.php?table=<?= $table_id ?>">
                         <input type="hidden" name="product_id" value="<?= $p['id'] ?>">
                         <div class="quantity-box">
                             <button type="button" class="qty-btn minus">-</button>
@@ -344,4 +344,5 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         <?php endforeach; ?>
     </div>
-<?php endif; ?>
+<?php endif; ?>    
+

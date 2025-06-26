@@ -149,6 +149,7 @@ include __DIR__ . '/../src/header.php';
 
       <p class="text-center"><strong>Toplam Tutar:</strong> <?= number_format($total,2) ?> ₺</p>
     </div>
+
     <div class="col-md-6">
       <!-- Ödeme Formu -->
       <form method="post" class="payment-form shadow-lg p-4 rounded-4">
@@ -173,7 +174,7 @@ include __DIR__ . '/../src/header.php';
           <a href="order.php?table=<?= $order['table_id'] ?>" class="btn btn-secondary btn-lg">Geri Dön</a>
         </div>
       </form>
-    </div>
+	</div>
   </div>
 </div>
 
