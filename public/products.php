@@ -14,10 +14,21 @@ if (isset($_GET['delete'])) {
 }
 
 // Yeni ürün ekleme
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['name'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_sort_id'])) {
+    $id         = (int)$_POST['update_sort_id'];
+    $sort_order = strlen($_POST['sort_order']) ? (int)$_POST['sort_order'] : null;
+    $up = $pdo->prepare('UPDATE products SET sort_order = ? WHERE id = ?');
+    $up->execute([$sort_order, $id]);
+    header('Location: products.php');
+    exit;
+}
+
+// Yeni ürün ekleme
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['name']) && !isset($_POST['update_sort_id'])) {
     $category_id = (int)$_POST['category_id'];
     $name        = trim($_POST['name']);
     $price       = (float)$_POST['price'];
+    $sort_order  = strlen($_POST['sort_order']) ? (int)$_POST['sort_order'] : null;
 
     // Görsel yükleme
     $imagePath = null;
@@ -34,24 +45,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['name'])) {
         }
     }
 
-    $pdo->prepare("
-        INSERT INTO products (category_id, name, price, image)
-        VALUES (?, ?, ?, ?)
-    ")->execute([$category_id, $name, $price, $imagePath]);
+    $pdo->prepare(
+        "INSERT INTO products (category_id, name, price, image, sort_order) VALUES (?, ?, ?, ?, ?)"
+    )->execute([$category_id, $name, $price, $imagePath, $sort_order]);
     header('Location: products.php');
     exit;
 }
 
 // Kategorileri çek (dropdown için)
-$cats = $pdo->query("SELECT * FROM categories ORDER BY name")->fetchAll();
+$cats = $pdo->query("SELECT * FROM categories ORDER BY sort_order IS NULL, sort_order, name")->fetchAll();
 
 // Ürünleri çek
-$prods = $pdo->query("
-    SELECT p.id, p.name, p.price, c.name AS category
-      FROM products p
-      JOIN categories c ON p.category_id = c.id
-   ORDER BY c.name, p.name
-")->fetchAll();
+$prods = $pdo->query(
+    "SELECT p.id, p.name, p.price, p.sort_order, c.name AS category
+       FROM products p
+       JOIN categories c ON p.category_id = c.id
+    ORDER BY c.name, p.sort_order IS NULL, p.sort_order, p.id"
+)->fetchAll();
 
 include __DIR__ . '/../src/header.php';
 ?>
@@ -79,6 +89,10 @@ include __DIR__ . '/../src/header.php';
       <input type="number" step="0.01" name="price" id="price" class="form-control" required>
     </div>
     <div class="mb-4">
+      <label for="sort_order" class="form-label">Sıra:</label>
+      <input type="number" name="sort_order" id="sort_order" class="form-control">
+    </div>
+    <div class="mb-4">
       <label for="image" class="form-label">Ürün Görseli:</label>
       <input type="file" name="image" id="image" class="form-control" accept="image/*">
     </div>
@@ -93,6 +107,7 @@ include __DIR__ . '/../src/header.php';
           <th>ID</th>
           <th>Ad</th>
           <th>Kategori</th>
+          <th>Sıra</th>
           <th>Fiyat</th>
           <th>İşlemler</th>
         </tr>
@@ -103,6 +118,12 @@ include __DIR__ . '/../src/header.php';
             <td><?= $p['id'] ?></td>
             <td><?= htmlspecialchars($p['name']) ?></td>
             <td><?= htmlspecialchars($p['category']) ?></td>
+            <td>
+              <form method="post" class="d-flex">
+                <input type="hidden" name="update_sort_id" value="<?= $p['id'] ?>">
+                <input type="number" name="sort_order" value="<?= htmlspecialchars($p['sort_order']) ?>" class="form-control form-control-sm me-2" style="width:80px" onchange="this.form.submit()">
+              </form>
+            </td>
             <td><?= number_format($p['price'],2) ?> ₺</td>
             <td>
               <a href="products_edit.php?id=<?= $p['id'] ?>" class="me-2 text-warning">Düzenle</a>

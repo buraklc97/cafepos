@@ -13,15 +13,16 @@ if (!$table_id) {
 }
 
 // Kategorileri al
-$categories = $pdo->query("SELECT * FROM categories ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
+$categories = $pdo->query("SELECT * FROM categories ORDER BY sort_order IS NULL, sort_order, name")->fetchAll(PDO::FETCH_ASSOC);
 
 // Se\xE7ili kategoriye g\xF6re \xFCr\xFCnleri getir
-$query = "SELECT p.id, p.name, p.price, p.image FROM products p";
+$query = "SELECT p.id, p.name, p.price, p.image, p.sort_order FROM products p";
 $params = [];
 if ($category_id) {
     $query .= " WHERE p.category_id = ?";
     $params[] = $category_id;
 }
+$query .= " ORDER BY p.sort_order IS NULL, p.sort_order, p.id";
 $stmt = $pdo->prepare($query);
 $stmt->execute($params);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -21,13 +21,14 @@ if (!$product) {
 }
 
 // Kategorileri çek
-$cats = $pdo->query('SELECT * FROM categories ORDER BY name')->fetchAll();
+$cats = $pdo->query('SELECT * FROM categories ORDER BY sort_order IS NULL, sort_order, name')->fetchAll();
 
 // Güncelleme
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $category_id  = (int)$_POST['category_id'];
     $name         = trim($_POST['name']);
     $price        = (float)$_POST['price'];
+    $sort_order   = strlen($_POST['sort_order']) ? (int)$_POST['sort_order'] : null;
     $imagePath    = $product['image'];
     $removeImage  = isset($_POST['delete_image']);
 
@@ -60,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $imagePath = null;	
     }
 
-    $upd = $pdo->prepare('UPDATE products SET category_id = ?, name = ?, price = ?, image = ? WHERE id = ?');
-    $upd->execute([$category_id, $name, $price, $imagePath, $id]);
+    $upd = $pdo->prepare('UPDATE products SET category_id = ?, name = ?, price = ?, image = ?, sort_order = ? WHERE id = ?');
+    $upd->execute([$category_id, $name, $price, $imagePath, $sort_order, $id]);
 
     header('Location: products.php');
     exit;
@@ -88,6 +89,10 @@ include __DIR__ . '/../src/header.php';
   <div class="mb-4">
     <label for="price" class="form-label">Fiyat (₺):</label>
     <input type="number" step="0.01" name="price" id="price" class="form-control" value="<?= number_format($product['price'], 2, '.', '') ?>" required>
+  </div>
+  <div class="mb-4">
+    <label for="sort_order" class="form-label">Sıra:</label>
+    <input type="number" name="sort_order" id="sort_order" class="form-control" value="<?= htmlspecialchars($product['sort_order']) ?>">
   </div>
   <div class="mb-4">
     <label for="image" class="form-label">Ürün Görseli:</label>
