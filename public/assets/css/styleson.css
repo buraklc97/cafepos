@@ -860,8 +860,8 @@ html[data-theme="dark"] .navbar .d-flex button {
 }
 
 @media (min-width: 992px) {
-  /*
-   * Previously custom rule for 10 columns. Removed because Bootstrap
-   * already provides `row-cols-lg-5` for five columns on large screens.
-   */
+  .row-cols-lg-10 > * {
+    flex: 0 0 auto;
+    width: 10%;
+  }
 }
