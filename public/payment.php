@@ -2,7 +2,7 @@
 // public/payment.php
 require __DIR__ . '/../config/init.php';
 require __DIR__ . '/../src/auth.php';
-requireRole(['Admin','Garson']);
+requireRole(['Admin','Garson', 'Garson (Yetkili)']);
 
 // 1) Parametre olarak order ID
 $order_id = (int)($_GET['order'] ?? 0);
