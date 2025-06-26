@@ -45,3 +45,18 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endforeach; ?>
     </div>
 </section>
+<script>
+  // Basit arama filtrasyonu (doğrudan sayfa yüklendiğinde)
+  document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('productSearch');
+    if (searchInput) {
+      searchInput.addEventListener('input', function () {
+        const term = this.value.toLowerCase();
+        document.querySelectorAll('#productGrid .product-item').forEach(function (item) {
+          const name = item.dataset.name.toLowerCase();
+          item.style.display = name.includes(term) ? '' : 'none';
+        });
+      });
+    }
+  });
+</script>
