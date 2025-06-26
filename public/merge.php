@@ -9,15 +9,22 @@ requireRole(['Admin','Garson']);
 $tables = $pdo->query(
     "SELECT t.id, t.name
        FROM pos_tables t
-       JOIN orders o ON o.table_id = t.id AND o.status = 'open'"
+       JOIN orders o ON o.table_id = t.id AND o.status = 'open'
+      WHERE t.id != 1"
 )->fetchAll(PDO::FETCH_ASSOC);
 
 $error = '';
 // Kaynak masa GET parametresinden
 $sourceTable = (int)($_GET['source_table'] ?? 0);
+if ($sourceTable == 1) {
+    header('Location: pos.php');
+    exit;
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $targetTable = (int)($_POST['target_table'] ?? 0);
-    if ($sourceTable === $targetTable) {
+    if ($targetTable == 1) {
+        $error = 'Kasa birleştirilemez.';
+    } elseif ($sourceTable === $targetTable) {
         $error = 'Kaynak ve hedef masa aynı olamaz.';
     } else {
         // Sipariş ID'lerini al

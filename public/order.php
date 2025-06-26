@@ -11,6 +11,11 @@ if (!$table_id) {
     header('Location: pos.php');
     exit;
 }
+// Kasa (ID=1) sadece Admin ve Garson (Yetkili) erişebilir
+if ($table_id == 1 && !in_array(currentUserRole(), ['Admin','Garson (Yetkili)'])) {
+    header('Location: pos.php');
+    exit;
+}
 
 // Masa adını al
 $stmtTableName = $pdo->prepare("SELECT name FROM pos_tables WHERE id = ?");
