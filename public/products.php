@@ -105,6 +105,7 @@ include __DIR__ . '/../src/header.php';
             <td><?= htmlspecialchars($p['category']) ?></td>
             <td><?= number_format($p['price'],2) ?> ₺</td>
             <td>
+              <a href="products_edit.php?id=<?= $p['id'] ?>" class="me-2 text-warning">Düzenle</a>
               <a href="?delete=<?= $p['id'] ?>"
                  class="text-danger"
                  onclick="return confirm('Bu ürünü silmek istediğinize emin misiniz?')">Sil</a>
