@@ -13,6 +13,15 @@ if ($role !== 'Admin' && $role !== 'Garson (Yetkili)') {
 $query .= " ORDER BY id";
 $tables = $pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
 $tables = array_values($tables);
+// Masalarin son durumunu kontrol icin hash. Versiyon sadece id, status ve opened_at alanlarina gore hesaplanir
+$versionData = array_map(function ($t) {
+    return [
+        'id' => $t['id'],
+        'status' => $t['status'],
+        'opened_at' => $t['opened_at'],
+    ];
+}, $tables);
+$tablesVersion = sha1(json_encode($versionData));
 // Kasa kaydini ayir
 $kasa = null;
 foreach ($tables as $idx => $tb) {
@@ -100,6 +109,7 @@ include __DIR__ . '/../src/header.php';
 <?php include __DIR__ . '/../src/footer.php'; ?>
 
 <script>
+  const currentTablesVersion = '<?= $tablesVersion ?>';
   // ISO formatı ile gelen timestamp'leri JS Date objesine dönüştürmek için
   function parseDateTime(dt) {
     return new Date(dt.replace(' ', 'T'));
@@ -126,30 +136,15 @@ include __DIR__ . '/../src/header.php';
     initTableWatcher();
   });
 
-  const tableStates = {};
   function initTableWatcher() {
-    document.querySelectorAll('.table-card').forEach(card => {
-      tableStates[card.dataset.id] = {
-        status: card.dataset.status,
-        opened_at: card.dataset.openedAt || ''
-      };
-    });
     setInterval(checkTableUpdates, 5000);
   }
 
   async function checkTableUpdates() {
     try {
-      const resp = await fetch('api_tables_status.php');
+      const resp = await fetch('api_tables_status.php', { cache: 'no-store' });
       const data = await resp.json();
-      let changed = false;
-      data.forEach(t => {
-        const prev = tableStates[t.id];
-        const opened = t.opened_at || '';
-        if (!prev || prev.status !== t.status || prev.opened_at !== opened) {
-          changed = true;
-        }
-      });
-      if (changed) {
+      if (data.version !== currentTablesVersion) {
         location.reload();
       }
     } catch (e) {

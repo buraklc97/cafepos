@@ -11,4 +11,7 @@ if ($role === 'Admin' || $role === 'Garson (Yetkili)') {
 }
 
 header('Content-Type: application/json');
-echo json_encode($tables);
+echo json_encode([
+    'version' => sha1(json_encode($tables)),
+    'tables' => $tables
+]);
