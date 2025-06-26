@@ -28,7 +28,7 @@ include __DIR__ . '/../src/header.php';
             </span>
           </div>
           <?php if ($t['status'] === 'occupied' && !empty($t['opened_at'])): ?>
-            <div class="table-timer mt-2 text-danger small" data-opened-at="<?= htmlspecialchars($t['opened_at']) ?>"></div>
+            <div class="table-timer badge bg-danger text-white small mt-2" data-opened-at="<?= htmlspecialchars($t['opened_at']) ?>"></div>
           <?php endif; ?>
         </div>
         <?php if ($t['status'] === 'occupied'): ?>
