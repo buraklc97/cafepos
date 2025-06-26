@@ -31,11 +31,11 @@ $stmtOpen = $pdo->prepare("SELECT opened_at FROM pos_tables WHERE id = ?");
 $stmtOpen->execute([$fromTable]);
 $originalOpenedAt = $stmtOpen->fetchColumn();
 
-// Hedef masalar listesi (kendi dışındaki)
+// Hedef masalar listesi (kendi dışındaki boş masalar)
 $tables = $pdo->query(
   "SELECT id, name, status
      FROM pos_tables
-    WHERE id != {$fromTable}
+    WHERE id != {$fromTable} AND status = 'empty'
     ORDER BY name"
 )->fetchAll(PDO::FETCH_ASSOC);
 

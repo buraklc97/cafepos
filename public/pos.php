@@ -8,6 +8,14 @@ requireRole(['Admin', 'Garson', 'Garson (Yetkili)']);
 $stmt = $pdo->query("SELECT * FROM pos_tables ORDER BY id");
 $tables = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Kaç masa dolu? Birleştirme butonuna izin vermek için hesapla
+$occupiedCount = 0;
+foreach ($tables as $tb) {
+    if ($tb['status'] === 'occupied') {
+        $occupiedCount++;
+    }
+}
+
 include __DIR__ . '/../src/header.php';
 ?>
 <h2 class="my-3 text-center">Masalar</h2>
@@ -41,10 +49,17 @@ include __DIR__ . '/../src/header.php';
             <span class="material-icons align-middle" style="font-size:1.1em; opacity:1; color:inherit;">swap_horiz</span>
             <span class="d-none d-sm-inline"> Taşı</span>
           </a>
-          <a href="merge.php?source_table=<?= $t['id'] ?>" class="btn btn-info btn-sm px-3 text-white">
-            <span class="material-icons align-middle" style="font-size:1.1em; opacity:1; color:inherit;">call_merge</span>
-            <span class="d-none d-sm-inline"> Birleştir</span>
-          </a>
+          <?php if ($occupiedCount > 1): ?>
+            <a href="merge.php?source_table=<?= $t['id'] ?>" class="btn btn-info btn-sm px-3 text-white">
+              <span class="material-icons align-middle" style="font-size:1.1em; opacity:1; color:inherit;">call_merge</span>
+              <span class="d-none d-sm-inline"> Birleştir</span>
+            </a>
+          <?php else: ?>
+            <a href="#" class="btn btn-info btn-sm px-3 text-white disabled" tabindex="-1" aria-disabled="true" style="pointer-events:none;">
+              <span class="material-icons align-middle" style="font-size:1.1em; opacity:1; color:inherit;">call_merge</span>
+              <span class="d-none d-sm-inline"> Birleştir</span>
+            </a>
+          <?php endif; ?>
         </div>
         <?php endif; ?>
       </div>
