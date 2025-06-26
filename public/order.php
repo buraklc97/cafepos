@@ -41,15 +41,16 @@ if (!$order) {
 // Ürün ekleme işlemi
 if (isset($_POST['add_product'])) {
     $prod_id = (int)$_POST['product_id'];
+    $qty = isset($_POST['quantity']) ? max(1, (int)$_POST['quantity']) : 1;
     $chk = $pdo->prepare("SELECT * FROM order_items WHERE order_id = ? AND product_id = ?");
     $chk->execute([$order_id, $prod_id]);
     if ($item = $chk->fetch()) {
-        $pdo->prepare("UPDATE order_items SET quantity = quantity + 1 WHERE id = ?")->execute([$item['id']]);
+        $pdo->prepare("UPDATE order_items SET quantity = quantity + ? WHERE id = ?")->execute([$qty, $item['id']]);
     } else {
         $price = $pdo->prepare("SELECT price FROM products WHERE id = ?");
         $price->execute([$prod_id]);
         $unit = $price->fetchColumn();
-        $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES (?, ?, 1, ?)")->execute([$order_id, $prod_id, $unit]);
+        $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES (?, ?, ?, ?)")->execute([$order_id, $prod_id, $qty, $unit]);
     }
 
     // Masa durumu güncelleme

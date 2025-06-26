@@ -117,6 +117,16 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     gap: 0.5rem;
 }
 
+.quantity-input {
+    width: 70px;
+    padding: 0.5rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
 .add-button:hover {
     background: linear-gradient(135deg, #059669 0%, #047857 100%);
     transform: scale(1.02);
@@ -192,6 +202,10 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         padding: 0.5rem 1rem;
         font-size: 0.9rem;
     }
+
+    .add-button .btn-text {
+        display: none;
+    }
 }
 </style>
 
@@ -225,9 +239,10 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="product-price"><?= number_format($p['price'], 2) ?> ₺</div>
                     <form method="post" action="order.php?table=<?= $table_id ?>">
                         <input type="hidden" name="product_id" value="<?= $p['id'] ?>">
+                        <input type="number" name="quantity" class="quantity-input" min="1" value="1">
                         <button type="submit" name="add_product" class="add-button">
                             <span class="material-icons">add_shopping_cart</span>
-                            Sepete Ekle
+                            <span class="btn-text">Sepete Ekle</span>
                         </button>
                     </form>
                 </div>
