@@ -104,11 +104,11 @@ include __DIR__ . '/../src/header.php';
       <input type="file" name="image" id="image" class="form-control" accept="image/*">
     </div>
     <button type="submit" class="btn btn-primary btn-lg w-100">Ekle</button>
-  </form>
+ </form>
 
   <!-- Ürün Arama ve Listeleme -->
   <div class="shadow-lg p-4 rounded-4 mb-4 mx-auto">
-    <div class="mb-4" style="max-width:600px;">
+    <div class="mb-4">
       <input type="text" id="search" class="form-control" placeholder="Ürün adı ara...">
     </div>
 
