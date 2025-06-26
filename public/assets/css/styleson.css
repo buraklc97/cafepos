@@ -502,6 +502,12 @@ input:focus, select:focus, textarea:focus, .form-control:focus, .form-select:foc
   opacity: 0.8;
 }
 
+/* Ikonlar buton içinde tam opak ve buton metni renginde olsun */
+.card-footer .material-icons {
+  color: inherit !important;
+  opacity: 1 !important;
+}
+
 /* Action Buttons */
 .action-buttons {
   display: flex;
