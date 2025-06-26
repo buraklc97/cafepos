@@ -5,6 +5,15 @@
   box-sizing: border-box;
 }
 
+/* HTML ve Body - Mobil boşluk sorununu gidermek için */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
 /* Temel Değişkenler - Geliştirilmiş Renk Paleti */
 :root {
   /* Light Theme - Daha iyi kontrast */
@@ -81,18 +90,50 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-/* Modern Container */
+/* Modern Container - Mobil için optimize edilmiş */
 .container, .container-fluid {
   background: var(--container-bg);
   border-radius: 16px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin: 1rem auto;
   padding: 1.5rem;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Bootstrap container override - Mobil boşluk düzeltmesi */
+@media (max-width: 576px) {
+  .container, .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  
+  /* Bootstrap row ve col sınıfları için */
+  .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  .col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12,
+  .col-sm, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12,
+  .col-md, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12,
+  .col-lg, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12,
+  .col-xl, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12 {
+    padding-left: 0.375rem !important;
+    padding-right: 0.375rem !important;
+  }
 }
 
 /* Navbar - Geliştirilmiş */
@@ -475,20 +516,24 @@ input:focus, select:focus, textarea:focus, .form-control:focus, .form-select:foc
   padding: 0.5rem 1rem !important;
 }
 
-/* Responsive Design - Geliştirilmiş */
+/* Responsive Design - Geliştirilmiş ve Mobil Boşluk Düzeltmesi */
 @media (max-width: 768px) {
   body {
     font-size: 14px;
+    padding: 0;
+    margin: 0;
   }
   
   .container, .container-fluid { 
-    padding: 1rem !important; 
-    margin: 0.5rem !important;
+    padding: 0.75rem !important; 
+    margin: 0.25rem !important;
     border-radius: 12px;
+    width: calc(100% - 0.5rem) !important;
+    max-width: calc(100% - 0.5rem) !important;
   }
   
   .card { 
-    margin-bottom: 1rem; 
+    margin-bottom: 0.75rem; 
     border-radius: 16px !important;
   }
   
@@ -517,8 +562,40 @@ input:focus, select:focus, textarea:focus, .form-control:focus, .form-select:foc
 }
 
 @media (max-width: 576px) {
+  /* Mobil boşluk sorununu tamamen gidermek için */
+  html, body {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+  
+  .container, .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
+    margin: 0 !important;
+    padding: 0.5rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 8px !important;
+  }
+  
+  .row {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
   .col-12, .col-sm-6, .col-md-4, .col-lg-3 {
     flex: 0 0 100% !important;
+    max-width: 100% !important;
+    padding: 0.25rem !important;
+    margin: 0 !important;
+  }
+  
+  .card {
+    margin: 0.25rem 0 !important;
+    width: 100% !important;
     max-width: 100% !important;
   }
   
@@ -528,6 +605,39 @@ input:focus, select:focus, textarea:focus, .form-control:focus, .form-select:foc
   
   .action-buttons .btn {
     width: 100%;
+  }
+  
+  /* Navbar mobil düzeltmesi */
+  .navbar {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  
+  /* Bootstrap grid sistem override */
+  .col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12,
+  .col-sm, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Ekstra küçük ekranlar için */
+@media (max-width: 375px) {
+  .container, .container-fluid {
+    padding: 0.25rem !important;
+    margin: 0 !important;
+  }
+  
+  .card-body {
+    padding: 0.75rem !important;
+  }
+  
+  .btn, button {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.8rem;
   }
 }
 
@@ -626,7 +736,6 @@ footer {
   }
 }
 
-
 /* En güçlü masa ismi kuralları */
 .card .card-body .fw-bold,
 .card .card-body div.fw-bold,
@@ -659,7 +768,6 @@ div.fw-bold {
 .card .fw-bold {
   color: var(--text) !important;
 }
-
 
 /* En güçlü navbar kuralları - Light mode için */
 html[data-theme="light"] .navbar form,
@@ -701,60 +809,18 @@ html[data-theme="dark"] .navbar .d-flex button {
   color: #f1f5f9 !important;
 }
 
-/* Inline style override */
-.navbar form span[style],
-.navbar form .material-icons[style],
-.navbar .text-white[style],
-.navbar .d-flex span[style],
-.navbar .d-flex .material-icons[style] {
-  color: var(--header-link) !important;
+/* Viewport meta tag için ek güvenlik */
+@viewport {
+  width: device-width;
+  initial-scale: 1.0;
+  maximum-scale: 1.0;
+  user-scalable: no;
 }
 
-/* Bootstrap class override */
-.navbar .text-white,
-.navbar .d-flex .text-white {
-  color: var(--header-link) !important;
-}
-
-/* Spesifik form button override */
-.navbar form[method="get"] button[type="submit"] {
-  color: var(--header-link) !important;
-  background: rgba(255, 255, 255, 0.1) !important;
-  border: 2px solid var(--header-link) !important;
-}
-
-.navbar form[method="get"] button[type="submit"] .material-icons {
-  color: var(--header-link) !important;
-}
-
-/* Ürün Ekle Butonu (Popup içindeki buton) */
-#addProductModal .btn-success {
-  background-color: var(--btn-bg) !important; /* Dark mode için buton rengi */
-  color: white !important;
-  border-color: var(--btn-bg) !important;
-  border-radius: 12px;
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-/* Modal İçeriği ve Başlık - Dark mode uyumlu */
-#addProductModal .modal-content,
-#addProductModal .modal-header,
-#addProductModal .modal-body {
-  background-color: var(--container-bg) !important;
-  color: var(--text) !important;
-}
-
-#addProductModal .btn-close {
-  filter: invert(1);
-}
-
-/* Buton Hover Efekti */
-#addProductModal .btn-success:hover {
-  background-color: var(--btn-bg) !important;
-  opacity: 0.9;
-  transform: scale(1.05);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+/* Mobil Safari için ek düzeltmeler */
+@supports (-webkit-touch-callout: none) {
+  body {
+    -webkit-text-size-adjust: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
 }
