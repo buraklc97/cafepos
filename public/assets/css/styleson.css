@@ -622,6 +622,11 @@ input:focus, select:focus, textarea:focus, .form-control:focus, .form-select:foc
     width: 100% !important;
     max-width: 100% !important;
   }
+  /* POS sayfasında iki kart yan yana görünmeli */
+  .col-6 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
 }
 
 /* Ekstra küçük ekranlar için */
