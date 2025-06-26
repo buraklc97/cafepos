@@ -13,7 +13,7 @@ include __DIR__ . '/../src/header.php';
 <h2 class="my-3 text-center">Masalar</h2>
 <div class="row g-3">
   <?php foreach ($tables as $t): ?>
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+    <div class="col-6 col-sm-6 col-md-4 col-lg-3">
       <div class="card h-100 shadow-sm rounded-4 text-center position-relative" 
            style="cursor:pointer;"
            onclick="window.location='order.php?table=<?= $t['id'] ?>'">
