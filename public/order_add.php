@@ -70,9 +70,9 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1.5rem;
     margin-top: 1.5rem;
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .product-card {
@@ -207,6 +207,17 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /* Responsive Design */
+@media (min-width: 992px) {
+    .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
 @media (max-width: 768px) {
     .products-grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

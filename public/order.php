@@ -447,7 +447,7 @@ include __DIR__ . '/../src/header.php';
 
 <!-- Popup Modal -->
 <div class="modal" tabindex="-1" id="addProductModal">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
@@ -466,6 +466,8 @@ include __DIR__ . '/../src/header.php';
 <?php include __DIR__ . '/../src/footer.php'; ?>
 
 <script>
+let productModal;
+
 function initQuantityButtons(container) {
     container.querySelectorAll('.quantity-box').forEach(box => {
         const input = box.querySelector('.quantity-input');
@@ -511,8 +513,10 @@ function openAddProductModal(categoryId = 0) {
             const modalTitle = document.querySelector('.modal-title');
             modalTitle.innerHTML = '<span class="material-icons me-2">restaurant_menu</span>\u00dcr\u00fcn Seçin';
 
-            const modal = new bootstrap.Modal(document.getElementById('addProductModal'), {keyboard:false});
-            modal.show();
+            if (!productModal) {
+                productModal = new bootstrap.Modal(document.getElementById('addProductModal'), {keyboard:false});
+            }
+            productModal.show();
 
             attachModalEvents(modalBody);
         })
