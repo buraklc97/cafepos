@@ -36,7 +36,7 @@ $tables = $pdo->query(
   "SELECT id, name, status
      FROM pos_tables
     WHERE id != {$fromTable} AND id != 1 AND status = 'empty'
-    ORDER BY name"
+    ORDER BY id"
 )->fetchAll(PDO::FETCH_ASSOC);
 
 // Transfer işlemi
