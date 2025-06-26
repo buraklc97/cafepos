@@ -118,7 +118,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 .quantity-input {
-    width: 70px;
+    width: 60px;
     padding: 0.5rem;
     border: 2px solid var(--border-color);
     border-radius: 8px;
@@ -135,8 +135,8 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 .qty-btn {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border: none;
     border-radius: 8px;
     color: #fff;
@@ -228,6 +228,18 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     .add-button {
         padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .qty-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 0.9rem;
+    }
+
+    .quantity-input {
+        width: 45px;
+        padding: 0.4rem;
         font-size: 0.9rem;
     }
 
