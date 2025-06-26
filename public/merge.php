@@ -120,7 +120,7 @@ include __DIR__ . '/../src/header.php';
         <option value="">Seçiniz</option>
         <?php foreach ($tables as $t): ?>
           <?php if ($t['id'] != $sourceTable): ?>
-            <option value="<?= $t['id'] ?>"><?= htmlspecialchars($t['name']) ?> (ID <?= $t['id'] ?>)</option>
+            <option value="<?= $t['id'] ?>"><?= htmlspecialchars($t['name']) ?></option>
           <?php endif; ?>
         <?php endforeach; ?>
       </select>
