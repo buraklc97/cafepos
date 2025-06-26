@@ -29,8 +29,8 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <section class="mb-4">
     <div class="row g-3" id="productGrid">
         <?php foreach ($products as $p): ?>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 product-item">
-                <div class="card shadow-sm rounded-4" style="cursor: pointer;" data-name="<?= htmlspecialchars($p['name']) ?>">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 product-item" data-name="<?= htmlspecialchars($p['name']) ?>">
+                <div class="card shadow-sm rounded-4" style="cursor: pointer;">
                     <img src="<?= htmlspecialchars($p['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($p['name']) ?>" style="height: 200px; object-fit: cover;">
                     <div class="card-body text-center">
                         <h5 class="card-title"><?= htmlspecialchars($p['name']) ?></h5>
