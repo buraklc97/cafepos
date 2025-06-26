@@ -32,8 +32,8 @@ $stmt->execute([$table_id]);
 $order = $stmt->fetch();
 if (!$order) {
     $pdo->prepare("INSERT INTO orders (table_id) VALUES (?)")->execute([$table_id]);
+    // Table status will be set to occupied when the first product is added
     $order_id = $pdo->lastInsertId();
-    $pdo->prepare("UPDATE pos_tables SET status = 'occupied', opened_at = NOW() WHERE id = ?")->execute([$table_id]);
 } else {
     $order_id = $order['id'];
 }
@@ -53,7 +53,7 @@ if (isset($_POST['add_product'])) {
     }
 
     // Masa durumu güncelleme
-    $pdo->prepare("UPDATE pos_tables SET status = 'occupied' WHERE id = ? AND opened_at IS NULL")->execute([$table_id]);
+    $pdo->prepare("UPDATE pos_tables SET status = 'occupied', opened_at = NOW() WHERE id = ? AND opened_at IS NULL")->execute([$table_id]);
 
     header("Location: order.php?table={$table_id}");
     exit;
