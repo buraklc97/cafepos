@@ -45,14 +45,3 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endforeach; ?>
     </div>
 </section>
-
-<script>
-  const searchInput = document.getElementById('productSearch');
-  searchInput.addEventListener('input', function() {
-    const term = this.value.toLowerCase();
-    document.querySelectorAll('#productGrid .product-item').forEach(item => {
-      const name = item.dataset.name.toLowerCase();
-      item.style.display = name.includes(term) ? '' : 'none';
-    });
-  });
-</script>
