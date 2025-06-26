@@ -80,15 +80,24 @@ include __DIR__ . '/../src/header.php';
   <!-- Ödeme Formu -->
   <form method="post" style="max-width: 400px; margin: 0 auto;" class="shadow-lg p-4 rounded-4">
     <div class="mb-4">
-      <label for="method" class="form-label">Ödeme Yöntemi:</label>
-      <select name="method" id="method" class="form-select" required>
-        <option value="cash">Nakit</option>
-        <option value="card">Kredi Kartı</option>
-      </select>
+      <label class="form-label">Ödeme Yöntemi:</label>
+      <div class="btn-group w-100 gap-3" role="group">
+        <input type="radio" class="btn-check" name="method" id="methodCash" value="cash" autocomplete="off" checked>
+        <label class="btn btn-outline-primary flex-fill" for="methodCash">
+          <span class="material-icons align-middle me-1">attach_money</span>
+          Nakit
+        </label>
+
+        <input type="radio" class="btn-check" name="method" id="methodCard" value="card" autocomplete="off">
+        <label class="btn btn-outline-primary flex-fill" for="methodCard">
+          <span class="material-icons align-middle me-1">credit_card</span>
+          Kredi Kartı
+        </label>
+      </div>
     </div>
     <div class="d-grid gap-2">
-      <button type="submit" class="btn btn-primary btn-lg">Öde</button>
-      <a href="pos.php" class="btn btn-secondary btn-lg">İptal</a>
+      <button type="submit" class="btn btn-primary btn-lg">Ödeme Al &amp; Masayı Kapat</button>
+      <a href="order.php?table=<?= $order['table_id'] ?>" class="btn btn-secondary btn-lg">Geri Dön</a>
     </div>
   </form>
 </div>
