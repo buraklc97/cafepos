@@ -34,8 +34,14 @@ include __DIR__ . '/../src/header.php';
         <?php if ($t['status'] === 'occupied'): ?>
         <div class="card-footer bg-transparent border-0 d-flex justify-content-center gap-2 py-3"
              style="pointer-events:auto;" onclick="event.stopPropagation();">
-          <a href="transfer.php?from=<?= $t['id'] ?>" class="btn btn-warning btn-sm px-3"><span class="material-icons align-middle" style="font-size:1.1em;">swap_horiz</span> Taşı</a>
-          <a href="merge.php?source_table=<?= $t['id'] ?>" class="btn btn-info btn-sm px-3 text-white"><span class="material-icons align-middle" style="font-size:1.1em;">call_merge</span> Birleştir</a>
+          <a href="transfer.php?from=<?= $t['id'] ?>" class="btn btn-warning btn-sm px-3">
+            <span class="material-icons align-middle" style="font-size:1.1em;">swap_horiz</span>
+            <span class="d-none d-sm-inline"> Taşı</span>
+          </a>
+          <a href="merge.php?source_table=<?= $t['id'] ?>" class="btn btn-info btn-sm px-3 text-white">
+            <span class="material-icons align-middle" style="font-size:1.1em;">call_merge</span>
+            <span class="d-none d-sm-inline"> Birleştir</span>
+          </a>
         </div>
         <?php endif; ?>
       </div>
