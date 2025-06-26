@@ -41,7 +41,7 @@ include __DIR__ . '/../src/header.php';
            data-id="1" data-status="<?= $kasa['status'] ?>" style="cursor:pointer;"
            onclick="window.location='order.php?table=1'">
         <div class="card-body py-4 px-2 d-flex flex-column justify-content-center align-items-center">
-          <span class="material-icons mb-2" style="font-size:2.7rem; color:#007bff;">point_of_sale</span>
+          <span class="material-icons mb-2" style="font-size:2.7rem; color:#ff9800 !important;">point_of_sale</span>
           <div class="fw-bold" style="font-size:1.1rem;"><?= htmlspecialchars($kasa['name']) ?></div>
         </div>
       </div>
