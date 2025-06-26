@@ -24,8 +24,6 @@ if (!$shift) {
     exit;
 }
 
-// Kategorileri çek
-$categories = $pdo->query("SELECT * FROM categories ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
 
 // Sipariş kontrol ve oluşturma
 $stmt = $pdo->prepare("SELECT * FROM orders WHERE table_id = ? AND status = 'open' LIMIT 1");
@@ -175,36 +173,6 @@ include __DIR__ . '/../src/header.php';
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-.category-card {
-    background: linear-gradient(135deg, var(--btn-bg) 0%, rgba(37, 99, 235, 0.8) 100%);
-    color: white;
-    border: none;
-    padding: 1.5rem;
-    border-radius: 16px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.category-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(135deg, #1d4ed8 0%, rgba(29, 78, 216, 0.9) 100%);
-}
-
-.category-card:active {
-    transform: translateY(-2px);
-}
 
 .cart-section {
     background: var(--container-bg);
@@ -333,15 +301,6 @@ include __DIR__ . '/../src/header.php';
         font-size: 1.5rem;
     }
     
-    .category-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
-    }
-    
-    .category-card {
-        padding: 1rem;
-        font-size: 1rem;
-    }
     
     .cart-section {
         padding: 1.5rem;
@@ -363,10 +322,6 @@ include __DIR__ . '/../src/header.php';
 }
 
 @media (max-width: 576px) {
-    .category-grid {
-        grid-template-columns: 1fr;
-    }
-    
     .cart-table {
         font-size: 0.8rem;
     }
@@ -391,20 +346,11 @@ include __DIR__ . '/../src/header.php';
     </h1>
 </div>
 
-<!-- Kategori Seçimi -->
-<div class="category-section">
-    <h2 class="text-center mb-0">
-        <span class="material-icons me-2">category</span>
-        Ürün Ekle
-    </h2>
-    <div class="category-grid">
-        <?php foreach ($categories as $category): ?>
-            <button class="category-card" data-category="<?= $category['id'] ?>">
-                <span class="material-icons mb-2" style="font-size: 2rem;">restaurant</span>
-                <div><?= htmlspecialchars($category['name']) ?></div>
-            </button>
-        <?php endforeach; ?>
-    </div>
+<!-- Ürün Ekle -->
+<div class="category-section text-center">
+    <button id="openAddProduct" class="btn btn-primary btn-lg">
+        <span class="material-icons me-2">add</span>Ürün Ekle
+    </button>
 </div>
 
 <!-- Sipariş Sepeti -->
@@ -418,7 +364,7 @@ include __DIR__ . '/../src/header.php';
         <div class="cart-empty">
             <div class="material-icons">shopping_cart</div>
             <p>Henüz ürün eklenmedi</p>
-            <small>Yukarıdan bir kategori seçerek ürün eklemeye başlayın</small>
+            <small>Yukarıdaki butondan ürün eklemeye başlayın</small>
         </div>
     <?php else: ?>
         <table class="cart-table">
@@ -533,58 +479,48 @@ function initQuantityButtons(container) {
         });
     });
 }
-// Kategori butonlarına tıklanıldığında popup modal'ını aç ve AJAX ile ürünleri yükle
-const categoryButtons = document.querySelectorAll('[data-category]');
-categoryButtons.forEach(button => {
-    button.addEventListener('click', function() {
-        var categoryId = this.getAttribute('data-category');
-        var categoryName = this.textContent.trim();
 
-        // AJAX ile order_add.php'yi kategoriye göre yükle
-        fetch('order_add.php?table=<?= $table_id ?>&category=' + categoryId)
-            .then(response => response.text())
-            .then(html => {
-                const modalBody = document.getElementById('modal-body-content');
-                modalBody.innerHTML = html;
-                
-                // Modal başlığını güncelle
-                const modalTitle = document.querySelector('.modal-title');
-                modalTitle.innerHTML = '<span class="material-icons me-2">restaurant_menu</span>' + categoryName + ' - Ürün Seçin';
-                
-                const modal = new bootstrap.Modal(document.getElementById('addProductModal'), {
-                    keyboard: false
-                });
-                modal.show();
-
-                // Arama çubuğu filtrasyonu
-                const searchInput = modalBody.querySelector('#productSearch');
-                if (searchInput) {
-                    searchInput.addEventListener('input', function() {
-                        const term = this.value.toLowerCase();
-                        modalBody.querySelectorAll('#productGrid .product-item').forEach(item => {
-                            const name = item.dataset.name.toLowerCase();
-                            item.style.display = name.includes(term) ? '' : 'none';
-                        });
-                    });
-                }
-
-                initQuantityButtons(modalBody);
-            })
-            .catch(error => {
-                console.error('Hata:', error);
-                alert('Ürünler yüklenirken bir hata oluştu.');
+function attachModalEvents(container) {
+    const searchInput = container.querySelector('#productSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const term = this.value.toLowerCase();
+            container.querySelectorAll('#productGrid .product-item').forEach(item => {
+                const name = item.dataset.name.toLowerCase();
+                item.style.display = name.includes(term) ? '' : 'none';
             });
-    });
-});
+        });
+    }
 
-// Kategori kartlarına hover efekti
-document.querySelectorAll('.category-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-4px)';
+    container.querySelectorAll('.category-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            openAddProductModal(this.dataset.category);
+        });
     });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0)';
-    });
-});
+
+    initQuantityButtons(container);
+}
+
+function openAddProductModal(categoryId = 0) {
+    fetch('order_add.php?table=<?= $table_id ?>&category=' + categoryId)
+        .then(res => res.text())
+        .then(html => {
+            const modalBody = document.getElementById('modal-body-content');
+            modalBody.innerHTML = html;
+
+            const modalTitle = document.querySelector('.modal-title');
+            modalTitle.innerHTML = '<span class="material-icons me-2">restaurant_menu</span>\u00dcr\u00fcn Seçin';
+
+            const modal = new bootstrap.Modal(document.getElementById('addProductModal'), {keyboard:false});
+            modal.show();
+
+            attachModalEvents(modalBody);
+        })
+        .catch(err => {
+            console.error('Hata:', err);
+            alert('\u00dcr\u00fcnler y\u00fcklenirken bir hata olu\u015ftu.');
+        });
+}
+
+document.getElementById('openAddProduct').addEventListener('click', () => openAddProductModal());
 </script>
