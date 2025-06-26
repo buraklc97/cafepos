@@ -56,12 +56,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['name']) && !isset($_
 $cats = $pdo->query("SELECT * FROM categories ORDER BY sort_order IS NULL, sort_order, name")->fetchAll();
 
 // Ürünleri çek
-$prods = $pdo->query(
-    "SELECT p.id, p.name, p.price, p.sort_order, c.name AS category
-       FROM products p
-       JOIN categories c ON p.category_id = c.id
-    ORDER BY c.name, p.sort_order IS NULL, p.sort_order, p.id"
-)->fetchAll();
+$search = trim($_GET['search'] ?? '');
+$sql = "SELECT p.id, p.name, p.price, p.sort_order, c.name AS category
+        FROM products p
+        JOIN categories c ON p.category_id = c.id";
+$params = [];
+if ($search !== '') {
+    $sql .= " WHERE p.name LIKE ?";
+    $params[] = '%' . $search . '%';
+}
+$sql .= " ORDER BY p.sort_order IS NULL, p.sort_order, p.id";
+$stmt  = $pdo->prepare($sql);
+$stmt->execute($params);
+$prods = $stmt->fetchAll();
 
 include __DIR__ . '/../src/header.php';
 ?>
@@ -70,7 +77,7 @@ include __DIR__ . '/../src/header.php';
   <h1 class="text-center mb-4">Ürün Yönetimi</h1>
 
   <!-- Yeni Ürün Ekleme Formu -->
-  <form method="post" enctype="multipart/form-data" class="shadow-lg p-4 rounded-4 mb-4">
+  <form method="post" enctype="multipart/form-data" class="shadow-lg p-4 rounded-4 mb-4 mx-auto" style="max-width:600px;">
     <div class="mb-4">
       <label for="category_id" class="form-label">Kategori:</label>
       <select name="category_id" id="category_id" class="form-select" required>
@@ -99,9 +106,16 @@ include __DIR__ . '/../src/header.php';
     <button type="submit" class="btn btn-primary btn-lg w-100">Ekle</button>
   </form>
 
+  <!-- Ürün Arama -->
+  <div class="mb-4 mx-auto" style="max-width:600px;">
+    <input type="text" id="search" class="form-control" placeholder="Ürün adı ara...">
+  </div>
+
+  <hr class="my-5">
+
   <!-- Ürün Listesi -->
   <div class="table-responsive">
-    <table class="table table-striped table-hover">
+    <table id="products-table" class="table table-striped table-hover">
       <thead>
         <tr>
           <th>ID</th>
@@ -137,5 +151,20 @@ include __DIR__ . '/../src/header.php';
     </table>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const searchInput = document.getElementById('search');
+  if (!searchInput) return;
+  const rows = document.querySelectorAll('#products-table tbody tr');
+  searchInput.addEventListener('input', function () {
+    const term = this.value.toLowerCase();
+    rows.forEach(function (row) {
+      const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+      row.style.display = name.includes(term) ? '' : 'none';
+    });
+  });
+});
+</script>
 
 <?php include __DIR__ . '/../src/footer.php'; ?>
