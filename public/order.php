@@ -32,7 +32,7 @@ $stmt->execute([$table_id]);
 $order = $stmt->fetch();
 if (!$order) {
     $pdo->prepare("INSERT INTO orders (table_id) VALUES (?)")->execute([$table_id]);
-    // Table status will be set to occupied when the first product is added
+	 // Table status will be set to occupied when the first product is added
     $order_id = $pdo->lastInsertId();
 } else {
     $order_id = $order['id'];
@@ -370,7 +370,7 @@ include __DIR__ . '/../src/header.php';
 <div class="category-section">
     <h2 class="text-center mb-0">
         <span class="material-icons me-2">category</span>
-        Kategori Seçin
+        Ürün Ekle
     </h2>
     <div class="category-grid">
         <?php foreach ($categories as $category): ?>
