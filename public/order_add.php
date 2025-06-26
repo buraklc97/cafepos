@@ -130,18 +130,14 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 .quantity-box {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.25rem;
-    margin-bottom: 0.5rem;
+    margin: 0 auto 0.5rem;
 }
 
 .qty-btn {
-<<<<<<< ah8m88-codex/ürün-adet-seçme-yerini-görsel-olarak-geliştirme
-    width: 28px;
-    height: 28px;
-=======
     width: 32px;
     height: 32px;
->>>>>>> main
     border: none;
     border-radius: 8px;
     color: #fff;
