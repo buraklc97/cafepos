@@ -25,7 +25,8 @@ $tableName = $stmtTableName->fetchColumn();
 // Vardiya kontrolü
 $shift = $pdo->query("SELECT * FROM shifts WHERE closed_at IS NULL ORDER BY opened_at DESC LIMIT 1")->fetch();
 if (!$shift) {
-    echo "<script>alert('Gün Başı alınmamış. Lütfen önce Gün Başı yapın.');window.location='dashboard.php';</script>";
+    $_SESSION['alert'] = 'Gün Başı alınmamış. Lütfen önce Gün Başı yapın.';
+    header('Location: dashboard.php');
     exit;
 }
 
@@ -70,7 +71,8 @@ if (isset($_GET['delete_item'])) {
 
     // Silme işlemi için yetki kontrolü
     if ($_SESSION['user_role'] === 'Garson' && $_SESSION['user_role'] !== 'Garson (Yetkili)') {
-        echo "<script>alert('Silme yetkiniz yok.');window.location='order.php?table={$table_id}';</script>";
+        $_SESSION['alert'] = 'Silme yetkiniz yok.';
+        header("Location: order.php?table={$table_id}");
         exit;
     }
 
@@ -190,9 +192,9 @@ include __DIR__ . '/../src/header.php';
                         <td><strong><?= number_format($subtotal, 2) ?> ₺</strong></td>
                         <td>
                             <?php if ($_SESSION['user_role'] === 'Admin' || $_SESSION['user_role'] === 'Garson (Yetkili)'): ?>
-                                <a href="?table=<?= $table_id ?>&delete_item=<?= $i['id'] ?>" 
-                                   class="delete-link" 
-                                   onclick="return confirm('Bu ürünü silmek istediğinize emin misiniz?')">
+                                <a href="?table=<?= $table_id ?>&delete_item=<?= $i['id'] ?>"
+                                   class="delete-link"
+                                   onclick="return showConfirmModal(event, 'Bu ürünü silmek istediğinize emin misiniz?')">
                                     <span class="material-icons">delete</span>
                                 </a>
                             <?php endif; ?>
