@@ -22,8 +22,7 @@ $stmtOrder = $pdo->prepare(
 $stmtOrder->execute([$fromTable]);
 $order = $stmtOrder->fetch(PDO::FETCH_ASSOC);
 if (!$order) {
-    $_SESSION['alert'] = 'Kaynak masada açık sipariş yok.';
-    header('Location: pos.php');
+    echo "<script>alert('Kaynak masada açık sipariş yok.');window.location='pos.php';</script>";
     exit;
 }
 
@@ -44,8 +43,7 @@ $tables = $pdo->query(
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['to_table'])) {
     $toTable = (int)$_POST['to_table'];
     if ($toTable == 1) {
-        $_SESSION['alert'] = 'Kasa taşınamaz.';
-        header('Location: pos.php');
+        echo "<script>alert('Kasa taşınamaz.');window.location='pos.php';</script>";
         exit;
     }
 
