@@ -141,7 +141,7 @@ include __DIR__ . '/../src/header.php';
               <a href="products_edit.php?id=<?= $p['id'] ?>" class="me-2 text-warning">Düzenle</a>
               <a href="?delete=<?= $p['id'] ?>"
                  class="text-danger"
-                 onclick="return confirm('Bu ürünü silmek istediğinize emin misiniz?')">Sil</a>
+                 onclick="return showConfirmModal(event, 'Bu ürünü silmek istediğinize emin misiniz?')">Sil</a>
             </td>
           </tr>
         <?php endforeach; ?>
