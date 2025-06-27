@@ -15,12 +15,18 @@ if (isset($_GET['delete'])) {
     } catch (PDOException $e) {
         // 1451 = FOREIGN KEY constraint violation
         if (isset($e->errorInfo[1]) && $e->errorInfo[1] == 1451) {
-            $_SESSION['alert'] = 'Bu kategoride ekli ürün varken kategoriyi silemezsiniz.';
+            echo "<script>
+                    alert('Bu kategoride ekli ürün varken kategoriyi silemezsiniz.');
+                    window.location='categories.php';
+                  </script>";
+            exit;
         } else {
-            $_SESSION['alert'] = 'Silme hatası: ' . $e->getMessage();
+            echo "<script>
+                    alert('Silme hatası: " . addslashes($e->getMessage()) . "');
+                    window.location='categories.php';
+                  </script>";
+            exit;
         }
-        header('Location: categories.php');
-        exit;
     }
 }
 
@@ -90,7 +96,7 @@ include __DIR__ . '/../src/header.php';
             <td>
               <a href="?delete=<?= $c['id'] ?>"
                  class="btn btn-danger btn-sm"
-                 onclick="return showConfirmModal(event, 'Bu kategoriyi silmek istediğinize emin misiniz?')">
+                 onclick="return confirm('Bu kategoriyi silmek istediğinize emin misiniz?')">
                  Sil
               </a>
             </td>
