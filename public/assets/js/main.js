@@ -19,3 +19,47 @@ document.addEventListener('touchend', function (e) {
   }
   lastTouchEnd = now;
 }, false);
+
+// ----------- Genel Popup Fonksiyonlari -----------
+let alertModalInstance, confirmModalInstance;
+
+function showAlert(message, callback) {
+  const modalEl = document.getElementById('alertModal');
+  if (!modalEl) return alert(message);
+  modalEl.querySelector('.modal-body').textContent = message;
+  if (!alertModalInstance) {
+    alertModalInstance = new bootstrap.Modal(modalEl);
+  }
+  modalEl.querySelector('.ok-btn').onclick = function () {
+    alertModalInstance.hide();
+    if (callback) callback();
+  };
+  alertModalInstance.show();
+}
+
+function showConfirmModal(event, message) {
+  event.preventDefault();
+  const modalEl = document.getElementById('confirmModal');
+  if (!modalEl) return confirm(message);
+  modalEl.querySelector('.modal-body').textContent = message;
+  if (!confirmModalInstance) {
+    confirmModalInstance = new bootstrap.Modal(modalEl);
+  }
+  const yesBtn = modalEl.querySelector('.yes-btn');
+  const noBtn = modalEl.querySelector('.no-btn');
+  yesBtn.onclick = function () {
+    confirmModalInstance.hide();
+    const target = event.currentTarget || event.target;
+    const element = target.closest('a,button');
+    if (element && element.tagName === 'A') {
+      window.location = element.href;
+    } else if (element && element.form) {
+      element.form.submit();
+    }
+  };
+  noBtn.onclick = function () {
+    confirmModalInstance.hide();
+  };
+  confirmModalInstance.show();
+  return false;
+}
