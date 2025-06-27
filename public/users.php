@@ -92,7 +92,7 @@ include __DIR__ . '/../src/header.php';
           <td><?= htmlspecialchars($user['role']) ?></td>
           <td>
             <a href="user_edit.php?id=<?= $user['id'] ?>" class="btn btn-warning btn-sm">Düzenle</a>
-            <a href="?delete=<?= $user['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?')">Sil</a>
+            <a href="?delete=<?= $user['id'] ?>" class="btn btn-danger btn-sm" onclick="return showConfirmModal(event, 'Bu kullanıcıyı silmek istediğinize emin misiniz?')">Sil</a>
           </td>
         </tr>
       <?php endforeach; ?>
