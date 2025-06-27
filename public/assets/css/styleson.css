@@ -870,3 +870,24 @@ html[data-theme="dark"] .navbar .d-flex button {
     width: 10%;
   }
 }
+
+/* Genel Popup Modalları */
+#alertModal .modal-content,
+#confirmModal .modal-content {
+  background: var(--container-bg) !important;
+  color: var(--text) !important;
+  border: 2px solid var(--border-color) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+#alertModal .modal-footer,
+#confirmModal .modal-footer {
+  border-top: none !important;
+  background: var(--container-bg) !important;
+}
+
+#alertModal .btn,
+#confirmModal .btn {
+  border-radius: 12px !important;
+}
