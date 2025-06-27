@@ -8,7 +8,8 @@ $table_id    = (int)($_GET['table'] ?? 0);
 $category_id = isset($_GET['category']) ? (int)$_GET['category'] : 0;
 
 if (!$table_id) {
-    echo "<script>alert('Ge\xE7ersiz i\x15Flem.');window.location='pos.php';</script>";
+    $_SESSION["alert"] = "Geçersiz işlem.";
+    header("Location: pos.php");
     exit;
 }
 
