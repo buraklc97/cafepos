@@ -37,21 +37,47 @@ function attachModalEvents(container) {
 const tableId = document.getElementById('order-data').dataset.tableId;
 
 function openAddProductModal(categoryId = 0) {
+    const modalBody = document.getElementById('modal-body-content');
+
+    // Show loading spinner while fetching modal content
+    modalBody.innerHTML =
+        '<div class="d-flex justify-content-center align-items-center p-5">' +
+        '<div class="spinner-border text-primary" role="status" ' +
+        'style="width: 3rem; height: 3rem;">' +
+        '<span class="visually-hidden">Y\u00fckleniyor...</span>' +
+        '</div></div>';
+
+    const modalTitle = document.querySelector('.modal-title');
+    modalTitle.innerHTML = '<span class="material-icons me-2">restaurant_menu</span>\u00dcr\u00fcn Seçin';
+
+    // Load modal stylesheet on first use to avoid layout shift
+    if (!document.getElementById('order-add-style')) {
+        const link = document.createElement('link');
+        link.id = 'order-add-style';
+        link.rel = 'stylesheet';
+        link.href = '/assets/css/order_add.css';
+        document.head.appendChild(link);
+    }
+
+    if (!productModal) {
+        productModal = new bootstrap.Modal(document.getElementById('addProductModal'), { keyboard: false });
+    }
+    productModal.show();
+
+    const start = Date.now();
     fetch('order_add.php?table=' + tableId + '&category=' + categoryId)
         .then(res => res.text())
         .then(html => {
-            const modalBody = document.getElementById('modal-body-content');
-            modalBody.innerHTML = html;
-
-            const modalTitle = document.querySelector('.modal-title');
-            modalTitle.innerHTML = '<span class="material-icons me-2">restaurant_menu</span>\u00dcr\u00fcn Seçin';
-
-            if (!productModal) {
-                productModal = new bootstrap.Modal(document.getElementById('addProductModal'), {keyboard:false});
+            const elapsed = Date.now() - start;
+            const showContent = () => {
+                modalBody.innerHTML = html;
+                attachModalEvents(modalBody);
+            };
+            if (elapsed < 3000) {
+                setTimeout(showContent, 3000 - elapsed);
+            } else {
+                showContent();
             }
-            productModal.show();
-
-            attachModalEvents(modalBody);
         })
         .catch(err => {
             console.error('Hata:', err);
