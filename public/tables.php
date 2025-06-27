@@ -29,17 +29,10 @@ if (isset($_GET['delete'])) {
     } catch (PDOException $e) {
         // FK ihlali kodu 1451 ise özel uyarı
         if (isset($e->errorInfo[1]) && $e->errorInfo[1] == 1451) {
-            echo "<script>
-                    alert('Bu masa üzerinde hâlâ açık sipariş(ler) var. Lütfen önce siparişleri kapatın.');
-                    window.location='tables.php';
-                  </script>";
+            echo "<script>document.addEventListener('DOMContentLoaded',function(){showAlert('Bu masa üzerinde hâlâ açık sipariş(ler) var. Lütfen önce siparişleri kapatın.',function(){window.location='tables.php';});});</script>";
             exit;
         }
-        // Diğer hatalarda dilerseniz genel bir uyarı:
-        echo "<script>
-                alert('Silme sırasında bir hata oluştu.');
-                window.location='tables.php';
-              </script>";
+        echo "<script>document.addEventListener('DOMContentLoaded',function(){showAlert('Silme sırasında bir hata oluştu.',function(){window.location='tables.php';});});</script>";
         exit;
     }
 }
@@ -93,7 +86,7 @@ include __DIR__ . '/../src/header.php';
               <?php endif; ?>
             </td>
             <td>
-              <a href="?delete=<?= $t['id'] ?>" class="text-danger" onclick="return confirm('Bu masayı silmek istediğinize emin misiniz?')">Sil</a>
+              <a href="?delete=<?= $t['id'] ?>" class="text-danger" onclick="return showConfirmModal(event, 'Bu masayı silmek istediğinize emin misiniz?')">Sil</a>
             </td>
           </tr>
         <?php endforeach; ?>
