@@ -55,7 +55,7 @@ function openAddProductModal(categoryId = 0) {
         })
         .catch(err => {
             console.error('Hata:', err);
-            showAlert('\u00dcr\u00fcnler y\u00fcklenirken bir hata olu\u015ftu.');
+            alert('\u00dcr\u00fcnler y\u00fcklenirken bir hata olu\u015ftu.');
         });
 }
 
