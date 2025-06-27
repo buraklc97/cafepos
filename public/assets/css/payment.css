@@ -1,4 +1,4 @@
-  .receipt {
+.receipt {
     font-family: "Courier New", Courier, monospace;
     border: 2px dashed var(--border-color);
     padding: 1rem;
@@ -26,4 +26,3 @@
   .receipt-table tfoot td {
     font-weight: 700;
   }
-

@@ -116,4 +116,3 @@ if (!$partial) {
 <div id="pos-data" data-tables-version="<?= $tablesVersion ?>" style="display:none;"></div>
 <script src="/assets/js/pos.js"></script>
 <?php } ?>
-

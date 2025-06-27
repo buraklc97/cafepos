@@ -60,4 +60,3 @@ function openAddProductModal(categoryId = 0) {
 }
 
 document.getElementById('openAddProduct').addEventListener('click', () => openAddProductModal());
-

@@ -264,4 +264,3 @@ include __DIR__ . '/../src/header.php';
 
 <script src="/assets/js/order.js"></script>
 
-

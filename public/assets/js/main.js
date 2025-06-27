@@ -19,4 +19,3 @@ document.addEventListener('touchend', function (e) {
   }
   lastTouchEnd = now;
 }, false);
-

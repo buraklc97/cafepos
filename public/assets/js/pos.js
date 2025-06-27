@@ -57,4 +57,3 @@ async function reloadTables(newVersion) {
     console.error(e);
   }
 }
-
