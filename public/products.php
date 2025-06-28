@@ -2,6 +2,7 @@
 // public/products.php
 require __DIR__ . '/../config/init.php';
 require __DIR__ . '/../src/auth.php';
+require __DIR__ . '/../src/image_utils.php';
 requireRole(['Admin']);
 
 // Silme işlemi
@@ -34,14 +35,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['name']) && !isset($_
     $imagePath = null;
     if (!empty($_FILES['image']['name'])) {
         $uploadDir = __DIR__ . '/uploads';
+        $thumbDir  = $uploadDir . '/thumbs';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
-        $ext      = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-        $fileName = uniqid('prod_', true) . '.' . $ext;
+        if (!is_dir($thumbDir)) {
+            mkdir($thumbDir, 0777, true);
+        }
+        $fileName = uniqid('prod_', true) . '.webp';
         $dest     = $uploadDir . '/' . $fileName;
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $dest)) {
+        if (imageToWebp($_FILES['image']['tmp_name'], $dest)) {
             $imagePath = 'uploads/' . $fileName;
+            createWebpThumbnail($dest, $thumbDir . '/' . $fileName);
         }
     }
 

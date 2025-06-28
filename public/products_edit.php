@@ -2,6 +2,7 @@
 // public/products_edit.php
 require __DIR__ . '/../config/init.php';
 require __DIR__ . '/../src/auth.php';
+require __DIR__ . '/../src/image_utils.php';
 requireRole(['Admin']);
 
 // Ürün ID'si
@@ -34,19 +35,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($_FILES['image']['name'])) {
         $uploadDir = __DIR__ . '/uploads';
+        $thumbDir  = $uploadDir . '/thumbs';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
-        $ext      = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-        $fileName = uniqid('prod_', true) . '.' . $ext;
+        if (!is_dir($thumbDir)) {
+            mkdir($thumbDir, 0777, true);
+        }
+        $fileName = uniqid('prod_', true) . '.webp';
         $dest     = $uploadDir . '/' . $fileName;
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $dest)) {
+        if (imageToWebp($_FILES['image']['tmp_name'], $dest)) {
             $imagePath = 'uploads/' . $fileName;
-            // Yeni görsel yüklendiğinde eski dosyayı kaldır
+            createWebpThumbnail($dest, $thumbDir . '/' . $fileName);
+            // Yeni görsel yüklendiğinde eski dosyaları kaldır
             if ($product['image']) {
                 $oldFile = __DIR__ . '/' . $product['image'];
                 if (is_file($oldFile)) {
                     unlink($oldFile);
+                }
+                $oldThumb = __DIR__ . '/uploads/thumbs/' . basename($product['image']);
+                if (is_file($oldThumb)) {
+                    unlink($oldThumb);
                 }
             }
         }
@@ -57,8 +66,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (is_file($oldFile)) {
                 unlink($oldFile);
             }
+            $oldThumb = __DIR__ . '/uploads/thumbs/' . basename($product['image']);
+            if (is_file($oldThumb)) {
+                unlink($oldThumb);
+            }
         }
-        $imagePath = null;	
+        $imagePath = null;
     }
 
     $upd = $pdo->prepare('UPDATE products SET category_id = ?, name = ?, price = ?, image = ?, sort_order = ? WHERE id = ?');

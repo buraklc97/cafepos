@@ -61,7 +61,11 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="product-card product-item" data-name="<?= htmlspecialchars($p['name']) ?>">
                 <div class="product-image">
                     <?php if (!empty($p['image'])): ?>
-                        <img src="<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['name']) ?>">
+                        <?php
+                            $thumb = preg_replace('#^uploads/#', 'uploads/thumbs/', $p['image']);
+                            $src   = is_file(__DIR__ . '/' . $thumb) ? $thumb : $p['image'];
+                        ?>
+                        <img src="<?= htmlspecialchars($src) ?>" alt="<?= htmlspecialchars($p['name']) ?>">
                     <?php else: ?>
                         <span class="material-icons">restaurant</span>
                     <?php endif; ?>
