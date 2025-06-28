@@ -263,6 +263,7 @@
         width: 45px;
         padding: 0.4rem;
         font-size: 0.9rem;
+        border-radius: 8px;
     }
 
     .add-button .btn-text {
