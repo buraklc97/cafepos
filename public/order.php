@@ -103,6 +103,22 @@ if (isset($_GET['delete_item'])) {
     exit;
 }
 
+// Ürün adedini artırma
+if (isset($_GET['increase_item'])) {
+    $item_id = (int)$_GET['increase_item'];
+
+    $chk = $pdo->prepare("SELECT order_id FROM order_items WHERE id = ?");
+    $chk->execute([$item_id]);
+    $oid = $chk->fetchColumn();
+    if ($oid == $order_id) {
+        $pdo->prepare("UPDATE order_items SET quantity = quantity + 1 WHERE id = ?")
+            ->execute([$item_id]);
+    }
+
+    header("Location: order.php?table={$table_id}");
+    exit;
+}
+
 // Veri çekme
 $items = $pdo->prepare("SELECT oi.id, oi.quantity, oi.unit_price, p.name FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?");
 $items->execute([$order_id]);
@@ -184,8 +200,9 @@ include __DIR__ . '/../src/header.php';
                 ?>
                     <tr>
                         <td><?= htmlspecialchars($i['name']) ?></td>
-                        <td>
+                        <td class="qty-cell">
                             <span class="badge bg-primary rounded-pill"><?= $i['quantity'] ?></span>
+                            <a href="?table=<?= $table_id ?>&increase_item=<?= $i['id'] ?>" class="qty-btn plus">+</a>
                         </td>
                         <td><?= number_format($i['unit_price'], 2) ?> ₺</td>
                         <td><strong><?= number_format($subtotal, 2) ?> ₺</strong></td>
