@@ -6,6 +6,17 @@
     padding-bottom: 0.5rem;
 }
 
+@media (max-width: 768px) {
+    .category-scroll {
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    .category-scroll::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+}
+
 .category-btn {
     flex: 0 0 auto;
     white-space: nowrap;
