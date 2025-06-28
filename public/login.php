@@ -4,13 +4,15 @@ require __DIR__ . '/../config/init.php';
 require __DIR__ . '/../src/auth.php';
 
 $error = '';
+$rememberChecked = true; // Beni Hatırla varsayılan olarak işaretli
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $rememberChecked = isset($_POST['remember']);
   if (attemptLogin($_POST['username'], $_POST['password'])) {
     // Başarılı girişi logla
     require __DIR__ . '/../src/logger.php';
     logAction('login', 'Kullanıcı giriş yaptı: ' . $_POST['username']);
 
-    if (!empty($_POST['remember'])) {
+    if ($rememberChecked) {
       // Oturum çerezinin ömrünü 24 saat yap ve çerezi güvenli hale getir
       setcookie(
         session_name(),
@@ -52,7 +54,7 @@ include __DIR__ . '/../src/header.php';
     </div>
 
     <div class="form-check mb-4">
-      <input type="checkbox" name="remember" id="remember" class="form-check-input" <?php if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['remember'])) echo 'checked'; ?>>
+      <input type="checkbox" name="remember" id="remember" class="form-check-input"<?= $rememberChecked ? ' checked' : '' ?>>
       <label for="remember" class="form-check-label">Beni Hatırla</label>
     </div>
 
