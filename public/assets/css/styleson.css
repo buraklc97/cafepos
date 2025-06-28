@@ -583,6 +583,17 @@ input:focus, select:focus, textarea:focus, .form-control:focus, .form-select:foc
 }
 
 
+@media (max-width: 576px) {
+  .table-responsive {
+    overflow-x: auto;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .table-responsive::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+}
+
 /* Ekstra küçük ekranlar için */
 @media (max-width: 375px) {
   .container, .container-fluid {
