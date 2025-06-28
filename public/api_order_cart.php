@@ -24,19 +24,6 @@ if ($order_id) {
     $items = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
 }
 
-$total = 0;
-foreach ($items as &$i) {
-    $subtotal = $i['quantity'] * $i['unit_price'];
-    $i['subtotal'] = $subtotal;
-    $total += $subtotal;
-}
-
-if (isset($_GET['format']) && $_GET['format'] === 'json') {
-    header('Content-Type: application/json');
-    echo json_encode(['cart' => ['items' => $items, 'total' => $total]]);
-    exit;
-}
-
 ob_start();
 ?>
 <div class="cart-header">
@@ -61,7 +48,12 @@ ob_start();
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($items as $i): ?>
+            <?php
+            $total = 0;
+            foreach ($items as $i):
+                $subtotal = $i['quantity'] * $i['unit_price'];
+                $total += $subtotal;
+            ?>
                 <tr>
                     <td><?= htmlspecialchars($i['name']) ?></td>
                     <td class="qty-cell">
@@ -69,7 +61,7 @@ ob_start();
                         <a href="?table=<?= $table_id ?>&increase_item=<?= $i['id'] ?>" class="qty-btn plus">+</a>
                     </td>
                     <td><?= number_format($i['unit_price'], 2) ?> ₺</td>
-                    <td><strong><?= number_format($i['subtotal'], 2) ?> ₺</strong></td>
+                    <td><strong><?= number_format($subtotal, 2) ?> ₺</strong></td>
                     <td>
                         <?php if ($_SESSION['user_role'] === 'Admin' || $_SESSION['user_role'] === 'Garson (Yetkili)'): ?>
                             <a href="?table=<?= $table_id ?>&delete_item=<?= $i['id'] ?>" class="delete-link" onclick="return confirm('Bu ürünü silmek istediğinize emin misiniz?')">
