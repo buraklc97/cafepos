@@ -104,6 +104,19 @@ body {
   padding: 0;
 }
 
+/* Ekran boyutuna gore temel yazi boyutu ayarlari */
+@media (max-width: 576px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 992px) {
+  body {
+    font-size: 17px;
+  }
+}
+
 /* Modern Container - Mobil için optimize edilmiş */
 .container, .container-fluid {
   background: var(--container-bg);
@@ -115,6 +128,12 @@ body {
   transition: all 0.3s ease;
   width: 100%;
   max-width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .container, .container-fluid {
+    max-width: 1200px;
+  }
 }
 
 /* Bootstrap container override - Mobil boşluk düzeltmesi */
@@ -853,14 +872,6 @@ html[data-theme="dark"] .navbar .d-flex button {
   background: rgba(241, 245, 249, 0.1) !important;
   border: 2px solid #f1f5f9 !important;
   color: #f1f5f9 !important;
-}
-
-/* Viewport meta tag için ek güvenlik */
-@viewport {
-  width: device-width;
-  initial-scale: 1.0;
-  maximum-scale: 1.0;
-  user-scalable: no;
 }
 
 /* Mobil Safari için ek düzeltmeler */
