@@ -217,6 +217,10 @@ main.container {
 }
 
 @media (max-width: 576px) {
+    .cart-section {
+        overflow-x: auto;
+    }
+
     .cart-table {
         font-size: 0.8rem;
     }
