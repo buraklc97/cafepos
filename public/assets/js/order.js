@@ -1,4 +1,4 @@
-let productSectionVisible = false;
+let productModal;
 
 function initQuantityButtons(container) {
     container.querySelectorAll('.quantity-box').forEach(box => {
@@ -13,7 +13,7 @@ function initQuantityButtons(container) {
         });
     });
 }
-function attachSectionEvents(container) {
+function attachModalEvents(container) {
     const searchInput = container.querySelector('#productSearch');
     if (searchInput) {
         searchInput.addEventListener('input', function() {
@@ -27,7 +27,7 @@ function attachSectionEvents(container) {
 
     container.querySelectorAll('.category-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            openAddProductSection(this.dataset.category);
+            openAddProductModal(this.dataset.category);
         });
     });
 
@@ -72,28 +72,27 @@ async function reloadCart() {
     }
 }
 
-function openAddProductSection(categoryId = 0) {
+function openAddProductModal(categoryId = 0) {
     fetch('order_add.php?table=' + tableId + '&category=' + categoryId)
         .then(res => res.text())
         .then(html => {
-            const section = document.getElementById('addProductSection');
-            section.innerHTML = html;
-            section.style.display = 'block';
-            productSectionVisible = true;
-            attachSectionEvents(section);
+            const modalBody = document.getElementById('modal-body-content');
+            modalBody.innerHTML = html;
+
+            const modalTitle = document.querySelector('.modal-title');
+            modalTitle.innerHTML = '<span class="material-icons me-2">restaurant_menu</span>\u00dcr\u00fcn Seçin';
+
+            if (!productModal) {
+                productModal = new bootstrap.Modal(document.getElementById('addProductModal'), {keyboard:false});
+            }
+            productModal.show();
+
+            attachModalEvents(modalBody);
         })
         .catch(err => {
             console.error('Hata:', err);
-            alert('Ürünler yüklenirken bir hata oluştu.');
+            alert('\u00dcr\u00fcnler y\u00fcklenirken bir hata olu\u015ftu.');
         });
 }
 
-document.getElementById('openAddProduct').addEventListener('click', () => {
-    const section = document.getElementById('addProductSection');
-    if (productSectionVisible) {
-        section.style.display = 'none';
-        productSectionVisible = false;
-    } else {
-        openAddProductSection();
-    }
-});
+document.getElementById('openAddProduct').addEventListener('click', () => openAddProductModal());
