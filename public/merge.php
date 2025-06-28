@@ -5,13 +5,12 @@ require __DIR__ . '/../src/auth.php';
 require __DIR__ . '/../src/logger.php';
 requireRole(['Admin','Garson']);
 
-// Mevcut dolu masaları çek (sipariş açık)
+// Mevcut dolu masaları çek (sadece dolu masalar listelensin)
 $tables = $pdo->query(
-    "SELECT t.id, t.name
-       FROM pos_tables t
-       JOIN orders o ON o.table_id = t.id AND o.status = 'open'
-      WHERE t.id != 1
-      ORDER BY t.id"
+    "SELECT id, name
+       FROM pos_tables
+      WHERE id != 1 AND status = 'occupied'
+      ORDER BY id"
 )->fetchAll(PDO::FETCH_ASSOC);
 
 $error = '';
