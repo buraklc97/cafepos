@@ -11,8 +11,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     logAction('login', 'Kullanıcı giriş yaptı: ' . $_POST['username']);
 
     if (!empty($_POST['remember'])) {
-      // Oturum çerezinin ömrünü 24 saat yap
-      setcookie(session_name(), session_id(), time() + 86400, '/');
+      // Oturum çerezinin ömrünü 24 saat yap ve çerezi güvenli hale getir
+      setcookie(
+        session_name(),
+        session_id(),
+        [
+          'expires'  => time() + 86400,
+          'path'     => '/',
+          'secure'   => true,
+          'httponly' => true,
+          'samesite' => 'Strict'
+        ]
+      );
     }
 
     header('Location: pos.php');
@@ -33,7 +43,7 @@ include __DIR__ . '/../src/header.php';
   <?php endif; ?>
     <div class="mb-4">
       <label for="username" class="form-label">Kullanıcı Adı:</label>
-      <input type="text" name="username" id="username" class="form-control" required>
+      <input type="text" name="username" id="username" class="form-control" required value="<?= htmlspecialchars($_POST['username'] ?? '') ?>">
     </div>
 
     <div class="mb-4">
@@ -42,7 +52,7 @@ include __DIR__ . '/../src/header.php';
     </div>
 
     <div class="form-check mb-4">
-      <input type="checkbox" name="remember" id="remember" class="form-check-input">
+      <input type="checkbox" name="remember" id="remember" class="form-check-input" <?php if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['remember'])) echo 'checked'; ?>>
       <label for="remember" class="form-check-label">Beni Hatırla</label>
     </div>
 
