@@ -162,9 +162,9 @@ include __DIR__ . '/../src/header.php';
 
 <!-- Ürün Ekle -->
 <div class="category-section text-center">
-    <button id="openAddProduct" class="btn btn-primary btn-lg">
+    <a id="openAddProduct" href="order_add.php?table=<?= $table_id ?>" class="btn btn-primary btn-lg">
         <span class="material-icons me-2">add</span>Ürün Ekle
-    </button>
+    </a>
 </div>
 
 <!-- Sipariş Sepeti -->

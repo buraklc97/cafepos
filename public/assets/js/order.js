@@ -95,4 +95,7 @@ function openAddProductModal(categoryId = 0) {
         });
 }
 
-document.getElementById('openAddProduct').addEventListener('click', () => openAddProductModal());
+document.getElementById('openAddProduct').addEventListener('click', (e) => {
+    e.preventDefault();
+    openAddProductModal();
+});
