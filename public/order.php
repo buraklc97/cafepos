@@ -128,6 +128,7 @@ include __DIR__ . '/../src/header.php';
 ?>
 
 <link rel="stylesheet" href="/assets/css/order.css">
+<link rel="stylesheet" href="/assets/css/order_add.css">
 <div id="order-data" data-table-id="<?= $table_id ?>" style="display:none;"></div>
 
 <div class="order-header">
