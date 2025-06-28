@@ -16,7 +16,29 @@ $openShift = $pdo->query(
 
 include __DIR__ . '/../src/header.php';
 ?>
+
 <h2 class="text-center my-4">Admin Paneli</h2>
+
+<!-- Aylık Ciro Grafiği -->
+<div class="card shadow-sm rounded-4 mb-4">
+  <div class="card-body">
+    <div class="row g-2 mb-3 align-items-end">
+      <div class="col-auto">
+        <label for="monthSelect" class="form-label mb-0">Ay</label>
+        <select id="monthSelect" class="form-select">
+          <?php for ($m = 1; $m <= 12; $m++): ?>
+            <option value="<?= $m ?>" <?= $m == date('n') ? 'selected' : '' ?>><?= $m ?></option>
+          <?php endfor; ?>
+        </select>
+      </div>
+      <div class="col-auto">
+        <label for="yearSelect" class="form-label mb-0">Yıl</label>
+        <input type="number" id="yearSelect" class="form-control" value="<?= date('Y') ?>" min="2000" max="2100">
+      </div>
+    </div>
+    <canvas id="salesChart" height="100"></canvas>
+  </div>
+</div>
 
 <div class="row g-3">
   <div class="col-12 col-md-6">
@@ -61,4 +83,6 @@ include __DIR__ . '/../src/header.php';
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/assets/js/dashboard.js"></script>
 <?php include __DIR__ . '/../src/footer.php'; ?>
