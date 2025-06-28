@@ -123,7 +123,6 @@ if (isset($_GET['increase_item'])) {
 $items = $pdo->prepare("SELECT oi.id, oi.quantity, oi.unit_price, p.name FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?");
 $items->execute([$order_id]);
 $items = $items->fetchAll(PDO::FETCH_ASSOC);
-$products = $pdo->query("SELECT * FROM products ORDER BY sort_order IS NULL, sort_order, id")->fetchAll(PDO::FETCH_ASSOC);
 
 // Silinen ürün loglarını çek (sadece admin ve aktif ürün varsa)
 $itemLogs = [];
@@ -166,6 +165,7 @@ include __DIR__ . '/../src/header.php';
         <span class="material-icons me-2">add</span>Ürün Ekle
     </button>
 </div>
+<div id="addProductSection" class="mt-3" style="display:none;"></div>
 
 <!-- Sipariş Sepeti -->
 <div id="cartWrapper" class="cart-section">
@@ -260,23 +260,6 @@ include __DIR__ . '/../src/header.php';
 </div>
 <?php endif; ?>
 
-<!-- Popup Modal -->
-<div class="modal" tabindex="-1" id="addProductModal">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    <span class="material-icons me-2">restaurant_menu</span>
-                    Ürün Seçin
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="modal-body-content">
-                <!-- order_add.php içeriği burada dinamik olarak yüklenecek -->
-            </div>
-        </div>
-    </div>
-</div>
 
 <?php include __DIR__ . '/../src/footer.php'; ?>
 

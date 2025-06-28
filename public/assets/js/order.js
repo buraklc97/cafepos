@@ -1,4 +1,4 @@
-let productModal;
+let productSectionVisible = false;
 
 function initQuantityButtons(container) {
     container.querySelectorAll('.quantity-box').forEach(box => {
@@ -13,7 +13,7 @@ function initQuantityButtons(container) {
         });
     });
 }
-function attachModalEvents(container) {
+function attachSectionEvents(container) {
     const searchInput = container.querySelector('#productSearch');
     if (searchInput) {
         searchInput.addEventListener('input', function() {
@@ -27,7 +27,7 @@ function attachModalEvents(container) {
 
     container.querySelectorAll('.category-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            openAddProductModal(this.dataset.category);
+            openAddProductSection(this.dataset.category);
         });
     });
 
@@ -72,27 +72,28 @@ async function reloadCart() {
     }
 }
 
-function openAddProductModal(categoryId = 0) {
+function openAddProductSection(categoryId = 0) {
     fetch('order_add.php?table=' + tableId + '&category=' + categoryId)
         .then(res => res.text())
         .then(html => {
-            const modalBody = document.getElementById('modal-body-content');
-            modalBody.innerHTML = html;
-
-            const modalTitle = document.querySelector('.modal-title');
-            modalTitle.innerHTML = '<span class="material-icons me-2">restaurant_menu</span>\u00dcr\u00fcn Seçin';
-
-            if (!productModal) {
-                productModal = new bootstrap.Modal(document.getElementById('addProductModal'), {keyboard:false});
-            }
-            productModal.show();
-
-            attachModalEvents(modalBody);
+            const section = document.getElementById('addProductSection');
+            section.innerHTML = html;
+            section.style.display = 'block';
+            productSectionVisible = true;
+            attachSectionEvents(section);
         })
         .catch(err => {
             console.error('Hata:', err);
-            alert('\u00dcr\u00fcnler y\u00fcklenirken bir hata olu\u015ftu.');
+            alert('Ürünler yüklenirken bir hata oluştu.');
         });
 }
 
-document.getElementById('openAddProduct').addEventListener('click', () => openAddProductModal());
+document.getElementById('openAddProduct').addEventListener('click', () => {
+    const section = document.getElementById('addProductSection');
+    if (productSectionVisible) {
+        section.style.display = 'none';
+        productSectionVisible = false;
+    } else {
+        openAddProductSection();
+    }
+});
