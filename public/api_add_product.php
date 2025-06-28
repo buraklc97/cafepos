@@ -4,15 +4,9 @@ require __DIR__ . '/../src/auth.php';
 requireRole(['Admin', 'Garson', 'Garson (Yetkili)']);
 $role = currentUserRole();
 
-$inputData = null;
-if (isset($_SERVER['CONTENT_TYPE']) && strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false) {
-    $json = file_get_contents('php://input');
-    $inputData = json_decode($json, true);
-}
-
-$table_id   = (int)($inputData['table_id'] ?? $_POST['table_id'] ?? 0);
-$product_id = (int)($inputData['product_id'] ?? $_POST['product_id'] ?? 0);
-$qty        = isset($inputData['quantity']) ? max(1, (int)$inputData['quantity']) : (isset($_POST['quantity']) ? max(1, (int)$_POST['quantity']) : 1);
+$table_id   = (int)($_POST['table_id'] ?? 0);
+$product_id = (int)($_POST['product_id'] ?? 0);
+$qty        = isset($_POST['quantity']) ? max(1, (int)$_POST['quantity']) : 1;
 
 if (!$table_id || !$product_id) {
     http_response_code(400);
@@ -55,28 +49,8 @@ try {
 
     $pdo->commit();
 
-    // Fetch updated cart data
-    $stmtItems = $pdo->prepare(
-        "SELECT oi.id, oi.quantity, oi.unit_price, p.name
-           FROM order_items oi
-           JOIN products p ON oi.product_id = p.id
-          WHERE oi.order_id = ?
-       ORDER BY oi.id"
-    );
-    $stmtItems->execute([$order_id]);
-    $items = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
-
-    $total = 0;
-    foreach ($items as &$it) {
-        $subtotal = $it['quantity'] * $it['unit_price'];
-        $it['subtotal'] = $subtotal;
-        $total += $subtotal;
-    }
-
-    $cart = [ 'items' => $items, 'total' => $total ];
-
     header('Content-Type: application/json');
-    echo json_encode(['success' => true, 'cart' => $cart]);
+    echo json_encode(['success' => true]);
 } catch (Exception $e) {
     $pdo->rollBack();
     http_response_code(500);
