@@ -13,13 +13,6 @@ html, body {
   margin: 0;
   padding: 0;
   touch-action: pan-x pan-y; /* prevent double-tap zoom while allowing scroll */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-}
-
-html::-webkit-scrollbar,
-body::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
 }
 
 /* Temel Değişkenler - Geliştirilmiş Renk Paleti */
