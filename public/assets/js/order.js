@@ -16,25 +16,59 @@ function initQuantityButtons(container) {
 function attachModalEvents(container) {
     const searchInput = container.querySelector('#productSearch');
     if (searchInput) {
-        searchInput.addEventListener('input', function() {
+        searchInput.addEventListener('input', function () {
             const term = this.value.toLowerCase();
             container.querySelectorAll('#productGrid .product-item').forEach(item => {
                 const name = item.dataset.name.toLowerCase();
                 item.style.display = name.includes(term) ? '' : 'none';
             });
-    });
+        });
     }
 
     container.querySelectorAll('.category-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             openAddProductModal(this.dataset.category);
         });
     });
 
     initQuantityButtons(container);
+
+    container.addEventListener('submit', handleAddProduct);
 }
 
 const tableId = document.getElementById('order-data').dataset.tableId;
+
+async function handleAddProduct(e) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    formData.append('table_id', tableId);
+    try {
+        const resp = await fetch('api_add_product.php', {
+            method: 'POST',
+            body: formData
+        });
+        if (resp.ok) {
+            await reloadCart();
+            form.querySelector('.quantity-input').value = 1;
+        } else {
+            alert('Ürün eklenemedi');
+        }
+    } catch (err) {
+        console.error(err);
+        alert('Ürün eklenirken hata oluştu');
+    }
+}
+
+async function reloadCart() {
+    try {
+        const resp = await fetch('api_order_cart.php?table=' + tableId, { cache: 'no-store' });
+        const html = await resp.text();
+        document.getElementById('cartWrapper').innerHTML = html;
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 function openAddProductModal(categoryId = 0) {
     fetch('order_add.php?table=' + tableId + '&category=' + categoryId)
