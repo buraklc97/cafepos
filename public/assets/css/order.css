@@ -219,9 +219,11 @@ main.container {
 @media (max-width: 576px) {
     .cart-section {
         padding: 0.9rem;
+        overflow-x: auto;
     }
     .cart-table {
         font-size: 0.8rem;
+        min-width: 360px;
     }
 
     .cart-table th,
