@@ -73,7 +73,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="product-info">
                     <div class="product-name"><?= htmlspecialchars($p['name']) ?></div>
                     <div class="product-price"><?= number_format($p['price'], 2) ?> ₺</div>
-					<form method="post" action="order.php?table=<?= $table_id ?>">
+                                        <form method="post" action="javascript:void(0)" class="add-product-form">
                         <input type="hidden" name="product_id" value="<?= $p['id'] ?>">
                         <div class="quantity-box">
                             <button type="button" class="qty-btn minus">-</button>
