@@ -79,9 +79,9 @@ if (!$partial) {
 <?php endif; ?>
 
 <h2 class="my-3 text-center">Masalar</h2>
-<div id="tablesRow" class="row row-cols-lg-10 g-3">
+<div id="tablesRow" class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 row-cols-xl-8 row-cols-xxl-10 g-3">
   <?php foreach ($tables as $t): ?>
-    <div class="col-6 col-sm-6 col-md-4">
+    <div class="col">
         <div class="card h-100 shadow-sm rounded-4 text-center position-relative table-card"
              data-id="<?= $t['id'] ?>"
              data-status="<?= $t['status'] ?>"
