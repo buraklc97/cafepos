@@ -77,7 +77,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <input type="hidden" name="product_id" value="<?= $p['id'] ?>">
                         <div class="quantity-box">
                             <button type="button" class="qty-btn minus">-</button>
-                            <input type="number" name="quantity" class="quantity-input" min="1" value="1" readonly>
+                            <input type="number" name="quantity" class="quantity-input" min="1" value="1">
                             <button type="button" class="qty-btn plus">+</button>
                         </div>
                         <button type="submit" name="add_product" class="add-button">
