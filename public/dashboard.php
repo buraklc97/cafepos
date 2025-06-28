@@ -22,8 +22,8 @@ include __DIR__ . '/../src/header.php';
 <!-- Aylık Ciro Grafiği -->
 <div class="card shadow-sm rounded-4 mb-4">
   <div class="card-body">
-    <div class="row g-2 mb-3 align-items-end">
-      <div class="col-auto">
+    <div class="row row-cols-auto g-2 mb-3 align-items-end justify-content-center">
+      <div class="col">
         <label for="monthSelect" class="form-label mb-0">Ay</label>
         <select id="monthSelect" class="form-select">
           <?php for ($m = 1; $m <= 12; $m++): ?>
@@ -31,12 +31,14 @@ include __DIR__ . '/../src/header.php';
           <?php endfor; ?>
         </select>
       </div>
-      <div class="col-auto">
+      <div class="col">
         <label for="yearSelect" class="form-label mb-0">Yıl</label>
         <input type="number" id="yearSelect" class="form-control" value="<?= date('Y') ?>" min="2000" max="2100">
       </div>
     </div>
-    <canvas id="salesChart" height="100"></canvas>
+    <div class="chart-wrap">
+      <canvas id="salesChart" height="100" class="w-100" style="max-height:400px;"></canvas>
+    </div>
   </div>
 </div>
 
