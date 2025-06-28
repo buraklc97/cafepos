@@ -33,35 +33,16 @@ function attachModalEvents(container) {
 
     initQuantityButtons(container);
 
-    // Attach submission handlers to forms loaded via AJAX
-    container.querySelectorAll('form.add-product-form').forEach(form => {
+    container.querySelectorAll('form').forEach(form => {
         form.addEventListener('submit', handleAddProduct);
-        form.dataset.handled = '1';
     });
 }
-
-// Fallback event delegation in case a form is inserted dynamically
-const addProductModalEl = document.getElementById('addProductModal');
-addProductModalEl.addEventListener('submit', (e) => {
-    const form = e.target.closest('.add-product-form');
-    if (form && !form.dataset.handled) {
-        handleAddProduct(e);
-    }
-});
-
-// Also capture clicks on the add buttons in case the form submission is blocked
-addProductModalEl.addEventListener('click', (e) => {
-    const btn = e.target.closest('.add-button');
-    if (btn) {
-        handleAddProduct(e);
-    }
-});
 
 const tableId = document.getElementById('order-data').dataset.tableId;
 
 async function handleAddProduct(e) {
     e.preventDefault();
-    const form = e.target.closest('.add-product-form');
+    const form = e.currentTarget;
     const formData = new FormData(form);
     formData.append('table_id', tableId);
     try {
