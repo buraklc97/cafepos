@@ -787,16 +787,8 @@ html[data-theme="dark"] .navbar .d-flex button {
   }
 }
 
-/* Özel row-cols sınıfları */
-@media (min-width: 1200px) {
-  .row-cols-xl-8 > * {
-    flex: 0 0 auto;
-    width: 12.5%;
-  }
-}
-
-@media (min-width: 1400px) {
-  .row-cols-xxl-10 > * {
+@media (min-width: 992px) {
+  .row-cols-lg-10 > * {
     flex: 0 0 auto;
     width: 10%;
   }
