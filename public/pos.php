@@ -93,6 +93,7 @@ if (!$partial) {
               <?= $t['status']=='empty' ? 'event_seat' : 'groups' ?>
             </span>
             <div class="fw-bold" style="font-size:1.1rem;"><?= htmlspecialchars($t['name']) ?></div>
+              <div class="info d-flex flex-wrap justify-content-center gap-2">
             <div>
               <span class="badge px-3 py-2 mt-2 <?= $t['status']=='empty' ? 'bg-success' : 'bg-danger' ?>">
                 <?= $t['status']=='empty' ? 'Boş' : 'Dolu' ?>
@@ -106,8 +107,8 @@ if (!$partial) {
     <?php endif; ?>
           </div>
           <?php if ($t['status'] === 'occupied'): ?>
-          <div class="card-footer bg-transparent border-0 d-flex flex-row flex-lg-column justify-content-center align-items-center gap-2 py-3"
-               style="pointer-events:auto;" onclick="event.stopPropagation();">
+            <div class="card-footer bg-transparent border-0 py-3" style="pointer-events:auto;" onclick="event.stopPropagation();">
+              <div class="button-group d-flex gap-2">
             <a href="transfer.php?from=<?= $t['id'] ?>" class="btn btn-warning btn-sm px-3">
               <span class="material-icons align-middle" style="font-size:1.1em; opacity:1; color:inherit;">swap_horiz</span>
               <span class="d-none d-sm-inline"> Taşı</span>
@@ -124,6 +125,7 @@ if (!$partial) {
               </a>
             <?php endif; ?>
         </div>
+              </div>
         <?php endif; ?>
         </div>
     </div>
