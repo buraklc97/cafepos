@@ -523,19 +523,6 @@ input:focus, select:focus, textarea:focus, .form-control:focus, .form-select:foc
   line-height: 1.2 !important;
 }
 
-/* Bilgi ve buton grupları */
-.table-card .info {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.table-card .button-group {
-  display: flex;
-  gap: 0.5rem;
-}
-
 /* Action Buttons */
 .action-buttons {
   display: flex;
