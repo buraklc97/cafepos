@@ -32,6 +32,17 @@ function attachModalEvents(container) {
     });
 
     initQuantityButtons(container);
+    lazyLoadImages(container);
+}
+
+function lazyLoadImages(container) {
+    container.querySelectorAll('.product-image img[data-src]').forEach(img => {
+        const holder = img.parentElement;
+        const src = img.getAttribute('data-src');
+        img.onload = () => holder.classList.remove('loading');
+        img.onerror = () => holder.classList.remove('loading');
+        img.src = src;
+    });
 }
 
 const tableId = document.getElementById('order-data').dataset.tableId;
