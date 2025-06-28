@@ -52,7 +52,7 @@ include __DIR__ . '/../src/header.php';
     </div>
 
     <div class="form-check mb-4">
-      <input type="checkbox" name="remember" id="remember" class="form-check-input">
+      <input type="checkbox" name="remember" id="remember" class="form-check-input" <?php if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['remember'])) echo 'checked'; ?>>
       <label for="remember" class="form-check-label">Beni Hatırla</label>
     </div>
 
