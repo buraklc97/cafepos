@@ -22,6 +22,19 @@ $versionData = array_map(function ($t) {
     ];
 }, $tables);
 $tablesVersion = sha1(json_encode($versionData));
+// Açık siparişlerdeki toplam tutarları çek
+$totStmt = $pdo->query(
+    "SELECT o.table_id, SUM(oi.quantity * oi.unit_price) AS total
+       FROM orders o
+       JOIN order_items oi ON oi.order_id = o.id
+      WHERE o.status = 'open'
+      GROUP BY o.table_id"
+);
+$totals = $totStmt->fetchAll(PDO::FETCH_KEY_PAIR);
+foreach ($tables as &$tb) {
+    $tb['total'] = isset($totals[$tb['id']]) ? (float)$totals[$tb['id']] : 0;
+}
+unset($tb);
 // Kasa kaydini ayir
 $kasa = null;
 foreach ($tables as $idx => $tb) {
@@ -56,6 +69,9 @@ if (!$partial) {
         <div class="card-body py-4 px-2 d-flex flex-column justify-content-center align-items-center">
           <span class="material-icons mb-2" style="font-size:2.7rem; color:#ff9800 !important;">point_of_sale</span>
           <div class="fw-bold" style="font-size:1.1rem;"><?= htmlspecialchars($kasa['name']) ?></div>
+    <?php if ($kasa["total"] > 0): ?>
+      <div class="mt-2"><span class="badge bg-primary"><?= number_format($kasa["total"], 2) ?> ₺</span></div>
+    <?php endif; ?>
         </div>
       </div>
     </div>
@@ -85,6 +101,9 @@ if (!$partial) {
             <?php if ($t['status'] === 'occupied' && !empty($t['opened_at'])): ?>
               <div class="table-timer badge bg-danger text-white small mt-2" data-opened-at="<?= htmlspecialchars($t['opened_at']) ?>"></div>
             <?php endif; ?>
+    <?php if ($t["total"] > 0): ?>
+      <div class="mt-2"><span class="badge bg-primary"><?= number_format($t["total"], 2) ?> ₺</span></div>
+    <?php endif; ?>
           </div>
           <?php if ($t['status'] === 'occupied'): ?>
           <div class="card-footer bg-transparent border-0 d-flex flex-row flex-lg-column justify-content-center align-items-center gap-2 py-3"
