@@ -32,45 +32,9 @@ function attachModalEvents(container) {
     });
 
     initQuantityButtons(container);
-
-    container.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', handleAddProduct);
-    });
 }
 
 const tableId = document.getElementById('order-data').dataset.tableId;
-
-async function handleAddProduct(e) {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    formData.append('table_id', tableId);
-    try {
-        const resp = await fetch('api_add_product.php', {
-            method: 'POST',
-            body: formData
-        });
-        if (resp.ok) {
-            await reloadCart();
-            form.querySelector('.quantity-input').value = 1;
-        } else {
-            alert('Ürün eklenemedi');
-        }
-    } catch (err) {
-        console.error(err);
-        alert('Ürün eklenirken hata oluştu');
-    }
-}
-
-async function reloadCart() {
-    try {
-        const resp = await fetch('api_order_cart.php?table=' + tableId, { cache: 'no-store' });
-        const html = await resp.text();
-        document.getElementById('cartWrapper').innerHTML = html;
-    } catch (err) {
-        console.error(err);
-    }
-}
 
 function openAddProductModal(categoryId = 0) {
     fetch('order_add.php?table=' + tableId + '&category=' + categoryId)

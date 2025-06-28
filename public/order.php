@@ -168,7 +168,7 @@ include __DIR__ . '/../src/header.php';
 </div>
 
 <!-- Sipariş Sepeti -->
-<div id="cartWrapper" class="cart-section">
+<div class="cart-section">
     <div class="cart-header">
         <span class="material-icons">shopping_cart</span>
         Sipariş Sepeti
