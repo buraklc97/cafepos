@@ -33,10 +33,8 @@ function attachModalEvents(container) {
 
     initQuantityButtons(container);
 
-    container.addEventListener('submit', (e) => {
-        if (e.target.closest('.add-product-form')) {
-            handleAddProduct(e);
-        }
+    container.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', handleAddProduct);
     });
 }
 
@@ -44,7 +42,7 @@ const tableId = document.getElementById('order-data').dataset.tableId;
 
 async function handleAddProduct(e) {
     e.preventDefault();
-    const form = e.target.closest('.add-product-form');
+    const form = e.currentTarget;
     const formData = new FormData(form);
     formData.append('table_id', tableId);
     try {
