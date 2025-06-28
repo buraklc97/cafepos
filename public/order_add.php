@@ -59,9 +59,11 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="products-grid" id="productGrid">
         <?php foreach ($products as $p): ?>
             <div class="product-card product-item" data-name="<?= htmlspecialchars($p['name']) ?>">
-                <div class="product-image">
+                <div class="product-image<?= !empty($p['image']) ? ' loading' : '' ?>">
                     <?php if (!empty($p['image'])): ?>
-                        <img src="<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['name']) ?>">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                             data-src="<?= htmlspecialchars($p['image']) ?>"
+                             alt="<?= htmlspecialchars($p['name']) ?>">
                     <?php else: ?>
                         <span class="material-icons">restaurant</span>
                     <?php endif; ?>
