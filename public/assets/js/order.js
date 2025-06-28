@@ -32,17 +32,20 @@ function attachModalEvents(container) {
     });
 
     initQuantityButtons(container);
-
-    container.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', handleAddProduct);
-    });
 }
+
+document.getElementById('addProductModal').addEventListener('submit', (e) => {
+    const form = e.target.closest('.add-product-form');
+    if (form) {
+        handleAddProduct(e);
+    }
+});
 
 const tableId = document.getElementById('order-data').dataset.tableId;
 
 async function handleAddProduct(e) {
     e.preventDefault();
-    const form = e.currentTarget;
+    const form = e.target.closest('.add-product-form');
     const formData = new FormData(form);
     formData.append('table_id', tableId);
     try {
