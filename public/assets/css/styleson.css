@@ -1,0 +1,872 @@
+/* Reset & Temel */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* HTML ve Body - Mobil boşluk sorununu gidermek için */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  touch-action: pan-x pan-y; /* prevent double-tap zoom while allowing scroll */
+}
+
+/* Temel Değişkenler - Geliştirilmiş Renk Paleti */
+:root {
+  /* Light Theme - Daha iyi kontrast */
+  --bg-light: #fafafa;
+  --text-light: #1a1a1a;
+  --header-light: #2563eb;
+  --link-light: #ffffff;
+  --container-light: #ffffff;
+  --input-light: #ffffff;
+  --border-light: #d1d5db;
+  --btn-bg-light: #2563eb;
+  --btn-secondary-light: #6b7280;
+  --success-light: #059669;
+  --danger-light: #dc2626;
+  --warning-light: #d97706;
+  --text-light-rgb: 26,26,26;
+
+  /* Dark Theme - Geliştirilmiş okunabilirlik */
+  --bg-dark: #0f172a;
+  --text-dark: #f1f5f9;
+  --header-dark: #1e293b;
+  --link-dark: #ffffff;
+  --container-dark: #1e293b;
+  --input-dark: #334155;
+  --border-dark: #475569;
+  --btn-bg-dark: #3b82f6;
+  --btn-secondary-dark: #64748b;
+  --success-dark: #10b981;
+  --danger-dark: #ef4444;
+  --warning-dark: #f59e0b;
+  --text-dark-rgb: 241,245,249;
+}
+
+/* Tema Uygulaması */
+html[data-theme="light"] {
+  --bg: var(--bg-light);
+  --text: var(--text-light);
+  --header-bg: var(--header-light);
+  --header-link: var(--link-light);
+  --container-bg: var(--container-light);
+  --input-bg: var(--input-light);
+  --border-color: var(--border-light);
+  --btn-bg: var(--btn-bg-light);
+  --btn-secondary: var(--btn-secondary-light);
+  --success: var(--success-light);
+  --danger: var(--danger-light);
+  --warning: var(--warning-light);
+  --text-rgb: var(--text-light-rgb);
+}
+
+html[data-theme="dark"] {
+  --bg: var(--bg-dark);
+  --text: var(--text-dark);
+  --header-bg: var(--header-dark);
+  --header-link: var(--link-dark);
+  --container-bg: var(--container-dark);
+  --input-bg: var(--input-dark);
+  --border-color: var(--border-dark);
+  --btn-bg: var(--btn-bg-dark);
+  --btn-secondary: var(--btn-secondary-dark);
+  --success: var(--success-dark);
+  --danger: var(--danger-dark);
+  --warning: var(--warning-dark);
+  --text-rgb: var(--text-dark-rgb);
+}
+
+/* Body ve Metin */
+body {
+  font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 16px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Modern Container - Mobil için optimize edilmiş */
+.container, .container-fluid {
+  background: var(--container-bg);
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin: 1rem auto;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Bootstrap container override - Mobil boşluk düzeltmesi */
+@media (max-width: 576px) {
+  .container, .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  
+  /* Bootstrap row ve col sınıfları için */
+  .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  .col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12,
+  .col-sm, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12,
+  .col-md, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12,
+  .col-lg, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12,
+  .col-xl, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12 {
+    padding-left: 0.375rem !important;
+    padding-right: 0.375rem !important;
+  }
+}
+
+/* Navbar - Geliştirilmiş */
+.navbar, .navbar-brand, .offcanvas {
+  background: var(--header-bg) !important;
+  color: var(--header-link) !important;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.navbar .material-icons,
+.navbar .navbar-brand {
+  color: var(--header-link) !important;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.navbar-toggler {
+  border: 2px solid var(--header-link) !important;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.navbar-toggler .material-icons { 
+  font-size: 2rem; 
+  color: var(--header-link) !important;
+}
+
+/* Tema Değiştir Butonu - Her iki temada da görünür */
+.navbar button[onclick*="toggleTheme"], 
+.navbar button:has(.material-icons:contains("dark_mode")),
+.navbar button:has(.material-icons:contains("light_mode")),
+.navbar button[type="submit"],
+.navbar form button {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 2px solid var(--header-link) !important;
+  color: var(--header-link) !important;
+  border-radius: 8px;
+  padding: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.navbar button[onclick*="toggleTheme"]:hover,
+.navbar button:has(.material-icons:contains("dark_mode")):hover,
+.navbar button:has(.material-icons:contains("light_mode")):hover,
+.navbar button[type="submit"]:hover,
+.navbar form button:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  transform: scale(1.05);
+}
+
+/* Admin Kullanıcı Adı ve İkonları */
+.navbar .text-white, 
+.navbar span,
+.navbar .material-icons,
+.navbar form span,
+.navbar form .material-icons {
+  color: var(--header-link) !important;
+  font-weight: 600;
+}
+
+/* Navbar form elementleri */
+.navbar form {
+  color: var(--header-link) !important;
+}
+
+.navbar form * {
+  color: var(--header-link) !important;
+}
+
+/* Offcanvas Menü - Geliştirilmiş */
+.offcanvas {
+  border-right: 2px solid var(--border-color);
+}
+
+.offcanvas-body .nav-link {
+  color: var(--header-link) !important;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.offcanvas-body .nav-link:hover, .offcanvas-body .nav-link.active {
+  background: rgba(255,255,255,0.15) !important;
+  color: #fbbf24 !important;
+  border-color: rgba(255,255,255,0.2);
+  transform: translateX(4px);
+}
+
+.offcanvas-title { 
+  color: var(--header-link) !important;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+/* Kartlar (Masalar) - Geliştirilmiş */
+.card {
+  background: var(--container-bg) !important;
+  border: 2px solid var(--border-color) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+  border-color: var(--btn-bg);
+}
+
+.card-body {
+  padding: 1.5rem !important;
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text) !important;
+  margin-bottom: 0.75rem;
+}
+
+.card .material-icons {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Badge - Geliştirilmiş */
+.badge {
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid currentColor;
+}
+
+.badge.bg-success {
+  background-color: var(--success) !important;
+  color: white !important;
+  border-color: var(--success) !important;
+}
+
+.badge.bg-danger {
+  background-color: var(--danger) !important;
+  color: white !important;
+  border-color: var(--danger) !important;
+}
+
+.badge.bg-warning {
+  background-color: var(--warning) !important;
+  color: white !important;
+  border-color: var(--warning) !important;
+}
+
+/* Formlar ve Inputlar - Geliştirilmiş */
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea,
+.form-control,
+.form-select {
+  background: var(--input-bg) !important;
+  color: var(--text) !important;
+  border: 2px solid var(--border-color) !important;
+  border-radius: 12px !important;
+  padding: 0.875rem 1rem !important;
+  margin-bottom: 0.75rem;
+  font-size: 1rem !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus, .form-control:focus, .form-select:focus {
+  border-color: var(--btn-bg) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+  outline: none !important;
+}
+
+::placeholder {
+  color: rgba(var(--text-rgb), 0.6) !important;
+  font-weight: 400;
+}
+
+.form-check-input {
+  width: 1em;
+  height: 1em;
+  padding: 0;
+  margin-right: 0.5rem;
+  border-radius: 6px;
+  border: 2px solid var(--border-color);
+}
+
+.form-label,
+.form-check-label {
+  color: var(--text) !important;
+}
+
+/* Butonlar - Geliştirilmiş */
+.btn, button, input[type=submit] {
+  border-radius: 12px !important;
+  padding: 0.875rem 1.5rem !important;
+  font-weight: 600;
+  font-size: 1rem;
+  border: 2px solid transparent !important;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Primary Button */
+.btn-primary, .btn:not([class*="btn-"]), button:not([class*="btn-"]), input[type=submit] {
+  background: var(--btn-bg) !important;
+  color: white !important;
+  border-color: var(--btn-bg) !important;
+}
+
+.btn-primary:hover, .btn:not([class*="btn-"]):hover, button:not([class*="btn-"]):hover, input[type=submit]:hover {
+  background: var(--btn-bg) !important;
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background: var(--btn-secondary) !important;
+  color: white !important;
+  border-color: var(--btn-secondary) !important;
+}
+
+/* Success Button */
+.btn-success {
+  background: var(--success) !important;
+  color: white !important;
+  border-color: var(--success) !important;
+}
+
+/* Danger Button */
+.btn-danger {
+  background: var(--danger) !important;
+  color: white !important;
+  border-color: var(--danger) !important;
+}
+
+/* Warning Button */
+.btn-warning {
+  background: var(--warning) !important;
+  color: white !important;
+  border-color: var(--warning) !important;
+}
+
+/* Outline Buttons */
+.btn-outline-primary {
+  background: transparent !important;
+  color: var(--btn-bg) !important;
+  border-color: var(--btn-bg) !important;
+}
+
+.btn-outline-primary:hover {
+  background: var(--btn-bg) !important;
+  color: white !important;
+}
+
+/* Selected state for toggle buttons */
+.btn-check:checked + .btn-outline-primary {
+  background: var(--btn-bg) !important;
+  color: white !important;
+}
+
+/* Tablo - Geliştirilmiş */
+.table, table {
+  background: var(--container-bg) !important;
+  color: var(--text) !important;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.table th, .table td, table th, table td {
+  background: var(--container-bg) !important;
+  color: var(--text) !important;
+  border-color: var(--border-color) !important;
+  padding: 1rem !important;
+  font-weight: 500;
+}
+
+.table thead th, table thead th {
+  background: var(--header-bg) !important;
+  color: var(--header-link) !important;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+  background: rgba(var(--text-rgb), 0.03) !important;
+}
+
+.table-hover tbody tr:hover {
+  background: rgba(37, 99, 235, 0.08) !important;
+  cursor: pointer;
+}
+
+/* Masa Durum Renkleri - Geliştirilmiş */
+.status-empty { 
+  color: var(--success) !important; 
+  font-weight: 700; 
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.status-occupied { 
+  color: var(--danger) !important; 
+  font-weight: 700; 
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Masa Kartları Özel Stiller */
+.table-card {
+  position: relative;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.table-card .material-icons {
+  color: var(--text);
+  opacity: 0.8;
+}
+
+.table-card.occupied {
+  border-color: var(--danger) !important;
+  background: linear-gradient(135deg, var(--container-bg) 0%, rgba(220, 38, 38, 0.05) 100%) !important;
+}
+
+.table-card.empty {
+  border-color: var(--success) !important;
+  background: linear-gradient(135deg, var(--container-bg) 0%, rgba(5, 150, 105, 0.05) 100%) !important;
+}
+
+/* Masa İsimleri - Her iki temada da görünür */
+.card-title, .card h5, .card h4, .card h3 {
+  color: var(--text) !important;
+  font-weight: 700 !important;
+  font-size: 1.25rem !important;
+  margin-bottom: 0.75rem !important;
+  text-shadow: none !important;
+}
+
+/* Masa ismi spesifik seçici */
+.card .fw-bold, .card .font-weight-bold {
+  color: var(--text) !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+}
+
+/* Masa durumu metinleri */
+.card .badge, .card .btn {
+  font-weight: 600 !important;
+}
+
+/* Masa kartlarındaki tüm metinler */
+.card .card-body, .card .card-body * {
+  color: var(--text) !important;
+}
+
+/* Masa kartlarındaki div'ler */
+.card .card-body div {
+  color: var(--text) !important;
+}
+
+/* Masa kartlarındaki ikonlar */
+.card .material-icons {
+  color: var(--text) !important;
+  opacity: 0.8;
+}
+
+/* Ikonlar buton içinde tam opak ve buton metni renginde olsun */
+.card-footer .material-icons {
+  color: inherit !important;
+  opacity: 1 !important;
+  font-size: 1rem !important;
+}
+
+/* Smaller action buttons on POS table cards */
+.table-card .card-footer .btn {
+  font-size: 0.75rem !important;
+  padding: 0.25rem 0.5rem !important;
+  line-height: 1.2 !important;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.action-buttons .btn {
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem !important;
+}
+
+/* Responsive Design - Geliştirilmiş ve Mobil Boşluk Düzeltmesi */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .container, .container-fluid { 
+    padding: 0.75rem !important; 
+    margin: 0.25rem !important;
+    border-radius: 12px;
+    width: calc(100% - 0.5rem) !important;
+    max-width: calc(100% - 0.5rem) !important;
+  }
+  
+  .card { 
+    margin-bottom: 0.75rem; 
+    border-radius: 16px !important;
+  }
+  
+  .card-body {
+    padding: 1rem !important;
+  }
+  
+  .btn, button, input[type=submit] {
+    padding: 0.75rem 1.25rem !important;
+    font-size: 0.875rem;
+  }
+  
+  .table th, .table td, table th, table td {
+    padding: 0.75rem !important;
+    font-size: 0.875rem;
+  }
+  
+  .navbar .material-icons,
+  .navbar .navbar-brand {
+    font-size: 1.25rem;
+  }
+  
+  .card .material-icons {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Mobil boşluk sorununu tamamen gidermek için */
+  html, body {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    touch-action: pan-x pan-y !important;
+  }
+  
+  .container, .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
+    margin: 0 !important;
+    padding: 0.5rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 8px !important;
+  }
+  
+  .row {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .col-12, .col-sm-6, .col-md-4, .col-lg-3 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    padding: 0.25rem !important;
+    margin: 0 !important;
+  }
+  
+  .card {
+    margin: 0.25rem 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .action-buttons .btn {
+    width: 100%;
+  }
+  
+  /* Navbar mobil düzeltmesi */
+  .navbar {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  
+  .col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12,
+  .col-sm, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  /* POS sayfasında iki kart yan yana görünmeli */
+  .col-6 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+}
+
+/* Ekstra küçük ekranlar için */
+@media (max-width: 375px) {
+  .container, .container-fluid {
+    padding: 0.25rem !important;
+    margin: 0 !important;
+  }
+  
+  .card-body {
+    padding: 0.75rem !important;
+  }
+  
+  .btn, button {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.8rem;
+  }
+}
+
+/* Footer - Geliştirilmiş */
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  color: rgba(var(--text-rgb), 0.6);
+  font-size: 0.875rem;
+  background: none;
+  margin-top: 3rem;
+  border: none;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Scrollbar - Geliştirilmiş */
+::-webkit-scrollbar {
+  width: 12px;
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 6px;
+  border: 2px solid var(--bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--btn-bg);
+}
+
+/* Loading States */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+  position: relative;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--btn-bg);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Focus Indicators */
+*:focus {
+  outline: 2px solid var(--btn-bg);
+  outline-offset: 2px;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  :root {
+    --border-light: #000000;
+    --border-dark: #ffffff;
+    --text-light: #000000;
+    --text-dark: #ffffff;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .navbar, .offcanvas, .btn, button {
+    display: none !important;
+  }
+  
+  .container, .card {
+    box-shadow: none !important;
+    border: 1px solid #000 !important;
+  }
+}
+
+/* En güçlü masa ismi kuralları */
+.card .card-body .fw-bold,
+.card .card-body div.fw-bold,
+.card-body .fw-bold,
+div.fw-bold {
+  color: var(--text) !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+}
+
+/* Tüm card içindeki text elementleri */
+.card .card-body > div:not(.badge):not(.table-timer):not(.card-footer) {
+  color: var(--text) !important;
+}
+
+/* Spesifik inline style override */
+.card .card-body div[style*="font-size"] {
+  color: var(--text) !important;
+}
+
+/* Bootstrap fw-bold class override */
+.fw-bold {
+  color: var(--text) !important;
+}
+
+/* Masa kartlarındaki her türlü text */
+.card-body div,
+.card-body span:not(.badge),
+.card-body .fw-bold,
+.card .fw-bold {
+  color: var(--text) !important;
+}
+
+/* En güçlü navbar kuralları - Light mode için */
+html[data-theme="light"] .navbar form,
+html[data-theme="light"] .navbar form *,
+html[data-theme="light"] .navbar form span,
+html[data-theme="light"] .navbar form .material-icons,
+html[data-theme="light"] .navbar form button,
+html[data-theme="light"] .navbar .text-white,
+html[data-theme="light"] .navbar .d-flex span,
+html[data-theme="light"] .navbar .d-flex .material-icons,
+html[data-theme="light"] .navbar .d-flex button {
+  color: #1a1a1a !important;
+}
+
+html[data-theme="light"] .navbar form button,
+html[data-theme="light"] .navbar .d-flex button {
+  background: rgba(26, 26, 26, 0.1) !important;
+  border: 2px solid #1a1a1a !important;
+  color: #1a1a1a !important;
+}
+
+/* Dark mode için */
+html[data-theme="dark"] .navbar form,
+html[data-theme="dark"] .navbar form *,
+html[data-theme="dark"] .navbar form span,
+html[data-theme="dark"] .navbar form .material-icons,
+html[data-theme="dark"] .navbar form button,
+html[data-theme="dark"] .navbar .text-white,
+html[data-theme="dark"] .navbar .d-flex span,
+html[data-theme="dark"] .navbar .d-flex .material-icons,
+html[data-theme="dark"] .navbar .d-flex button {
+  color: #f1f5f9 !important;
+}
+
+html[data-theme="dark"] .navbar form button,
+html[data-theme="dark"] .navbar .d-flex button {
+  background: rgba(241, 245, 249, 0.1) !important;
+  border: 2px solid #f1f5f9 !important;
+  color: #f1f5f9 !important;
+}
+
+/* Viewport meta tag için ek güvenlik */
+@viewport {
+  width: device-width;
+  initial-scale: 1.0;
+  maximum-scale: 1.0;
+  user-scalable: no;
+}
+
+/* Mobil Safari için ek düzeltmeler */
+@supports (-webkit-touch-callout: none) {
+  body {
+    -webkit-text-size-adjust: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (min-width: 992px) {
+  .row-cols-lg-10 > * {
+    flex: 0 0 auto;
+    width: 10%;
+  }
+}
