@@ -1,5 +1,36 @@
 let productModal;
 
+function enableDragScroll(element) {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    element.addEventListener('mousedown', e => {
+        isDown = true;
+        element.classList.add('dragging');
+        startX = e.pageX - element.offsetLeft;
+        scrollLeft = element.scrollLeft;
+    });
+
+    element.addEventListener('mouseleave', () => {
+        isDown = false;
+        element.classList.remove('dragging');
+    });
+
+    element.addEventListener('mouseup', () => {
+        isDown = false;
+        element.classList.remove('dragging');
+    });
+
+    element.addEventListener('mousemove', e => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - element.offsetLeft;
+        const walk = x - startX;
+        element.scrollLeft = scrollLeft - walk;
+    });
+}
+
 function initQuantityButtons(container) {
     container.querySelectorAll('.quantity-box').forEach(box => {
         const input = box.querySelector('.quantity-input');
@@ -30,6 +61,11 @@ function attachModalEvents(container) {
             openAddProductModal(this.dataset.category);
         });
     });
+
+    const categoryScroll = container.querySelector('.category-scroll');
+    if (categoryScroll) {
+        enableDragScroll(categoryScroll);
+    }
 
     initQuantityButtons(container);
 }
