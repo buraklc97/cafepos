@@ -104,6 +104,10 @@ main.container {
     color: var(--text);
 }
 
+.cart-table .qty-cell {
+    white-space: nowrap;
+}
+
 .cart-table tr:hover {
     background: rgba(var(--text-rgb), 0.02);
 }
@@ -216,9 +220,20 @@ main.container {
     .cart-table {
         font-size: 0.8rem;
     }
-    
+
     .cart-table th,
     .cart-table td {
         padding: 0.5rem 0.25rem;
+    }
+
+    .cart-table .badge {
+        font-size: 0.75rem;
+    }
+
+    .cart-table .qty-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 0.8rem;
+        margin-left: 0.25rem;
     }
 }
