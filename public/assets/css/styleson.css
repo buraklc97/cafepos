@@ -793,3 +793,13 @@ html[data-theme="dark"] .navbar .d-flex button {
     width: 10%;
   }
 }
+.chart-wrap {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#monthSelect,
+#yearSelect {
+  min-width: 100px;
+}
