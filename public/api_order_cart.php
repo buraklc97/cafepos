@@ -58,7 +58,7 @@ ob_start();
                     <td><?= htmlspecialchars($i['name']) ?></td>
                     <td class="qty-cell">
                         <span class="badge bg-primary rounded-pill"><?= $i['quantity'] ?></span>
-                        <a href="?table=<?= $table_id ?>&increase_item=<?= $i['id'] ?>" class="qty-btn plus">+</a>
+                        <a href="?table=<?= $table_id ?>&increase_item=<?= $i['id'] ?>" class="qty-btn plus" data-item-id="<?= $i['id'] ?>">+</a>
                     </td>
                     <td><?= number_format($i['unit_price'], 2) ?> ₺</td>
                     <td><strong><?= number_format($subtotal, 2) ?> ₺</strong></td>
