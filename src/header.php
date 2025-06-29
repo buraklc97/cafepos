@@ -3,28 +3,10 @@ require __DIR__ . '/../config/init.php';
 
 $currentUrl = strtok($_SERVER['REQUEST_URI'], '?');
 
-if (!empty($_SESSION['user_id']) && isset($_GET['theme']) && in_array($_GET['theme'], ['light','dark'], true)) {
-    $newTheme = $_GET['theme'];
-    $up = $pdo->prepare(
-        "INSERT INTO user_settings (user_id, theme) VALUES (?,?) ON DUPLICATE KEY UPDATE theme = VALUES(theme)"
-    );
-    $up->execute([ $_SESSION['user_id'], $newTheme ]);
-    header('Location: ' . $currentUrl);
-    exit;
-}
 $username = $_SESSION['username'] ?? '';
 $role     = $_SESSION['user_role'] ?? '';
-
-$currentTheme = 'light';
-if (!empty($_SESSION['user_id'])) {
-    $stmt = $pdo->prepare('SELECT theme FROM user_settings WHERE user_id = ?');
-    $stmt->execute([ $_SESSION['user_id'] ]);
-    $currentTheme = $stmt->fetchColumn() ?: 'light';
-}
-$toggleTheme = $currentTheme === 'light' ? 'dark' : 'light';
 ?>
 <!DOCTYPE html>
-<!-- <html lang="tr" data-theme="<?= htmlspecialchars($currentTheme) ?>"> -->
 <html lang="tr" data-theme="dark">
 <head>
   <meta charset="UTF-8">
@@ -45,12 +27,11 @@ $toggleTheme = $currentTheme === 'light' ? 'dark' : 'light';
       <span class="material-icons">menu</span>
     </button>
     <span class="navbar-brand mx-auto"><?= htmlspecialchars($role === 'Admin' ? 'Cafe POS (Admin)' : 'Cafe POS') ?></span>
-    <!-- Tema Switch + Kullanıcı -->
-    <form method="get" action="<?= htmlspecialchars($currentUrl) ?>" class="d-flex align-items-center m-0">
-      <input type="hidden" name="theme" value="<?= $toggleTheme ?>">
+    <!-- Kullanıcı Bilgisi -->
+    <div class="d-flex align-items-center m-0">
       <span class="material-icons me-1">account_circle</span>
       <span class="text-white d-none d-md-inline"><?= htmlspecialchars($username) ?></span>
-    </form>
+    </div>
   </div>
 </nav>
 
