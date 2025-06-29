@@ -229,8 +229,11 @@ include __DIR__ . '/../src/header.php';
     <?php endif; ?>
 </div>
 
-<div id="paymentButtonWrapper">
-<?php if (!empty($items) && (($_SESSION['user_role'] === 'Admin') || ($_SESSION['user_role'] === 'Garson (Yetkili)'))): ?>
+<?php
+$canClose = in_array($_SESSION['user_role'], ['Admin', 'Garson (Yetkili)']);
+?>
+<div id="paymentButtonWrapper" style="<?= empty($items) ? 'display:none;' : '' ?>">
+<?php if ($canClose): ?>
 <a href="payment.php?order=<?= $order_id ?>" class="payment-button">
     <span class="material-icons">payment</span>
     Ödeme Al & Masayı Kapat
