@@ -1,32 +1,5 @@
 let productModal;
 
-function attachCartEvents(container) {
-    container.querySelectorAll('.qty-btn.plus').forEach(btn => {
-        btn.addEventListener('click', handleIncreaseItem);
-    });
-}
-
-async function handleIncreaseItem(e) {
-    e.preventDefault();
-    const itemId = e.currentTarget.dataset.itemId;
-    if (!itemId) return;
-
-    const formData = new FormData();
-    formData.append('item_id', itemId);
-
-    try {
-        const resp = await fetch('api_increase_item.php', { method: 'POST', body: formData });
-        if (resp.ok) {
-            updateOrderCart();
-        } else {
-            alert('Ürün eklenemedi');
-        }
-    } catch (err) {
-        console.error(err);
-        alert('Ürün eklenirken hata oluştu');
-    }
-}
-
 function initQuantityButtons(container) {
     container.querySelectorAll('.quantity-box').forEach(box => {
         const input = box.querySelector('.quantity-input');
@@ -155,9 +128,7 @@ async function updateOrderCart() {
     try {
         const resp = await fetch('api_order_cart.php?table=' + tableId, { cache: 'no-store' });
         const html = await resp.text();
-        const wrapper = document.getElementById('cartWrapper');
-        wrapper.innerHTML = html;
-        attachCartEvents(wrapper);
+        document.getElementById('cartWrapper').innerHTML = html;
         
         // Ödeme butonunun görünürlüğünü kontrol et
         updatePaymentButtonVisibility();
@@ -205,4 +176,3 @@ function openAddProductModal(categoryId = 0) {
 }
 
 document.getElementById('openAddProduct').addEventListener('click', () => openAddProductModal());
-attachCartEvents(document.getElementById('cartWrapper'));
