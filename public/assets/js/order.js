@@ -129,7 +129,7 @@ async function updateOrderCart() {
         const resp = await fetch('api_order_cart.php?table=' + tableId, { cache: 'no-store' });
         const html = await resp.text();
         document.getElementById('cartWrapper').innerHTML = html;
-        
+
         // Ödeme butonunun görünürlüğünü kontrol et
         updatePaymentButtonVisibility();
     } catch (err) {
@@ -176,3 +176,44 @@ function openAddProductModal(categoryId = 0) {
 }
 
 document.getElementById('openAddProduct').addEventListener('click', () => openAddProductModal());
+
+async function increaseCartItem(itemId) {
+    const formData = new FormData();
+    formData.append('table_id', tableId);
+    formData.append('item_id', itemId);
+
+    try {
+        const resp = await fetch('api_increase_item.php', {
+            method: 'POST',
+            body: formData
+        });
+        if (resp.ok) {
+            updateOrderCart();
+        } else {
+            alert('Ürün adedi artırılamadı');
+        }
+    } catch (err) {
+        console.error(err);
+        alert('Ürün adedi artırılırken hata oluştu');
+    }
+}
+
+
+// Sepet butonlari icin tek bir dinleyici kullan
+function handleCartClick(e) {
+    const btn = e.target.closest('.qty-btn.plus');
+    if (btn) {
+        e.preventDefault();
+        const itemId = btn.dataset.itemId;
+        if (itemId) {
+            increaseCartItem(itemId);
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const wrapper = document.getElementById('cartWrapper');
+    if (wrapper) {
+        wrapper.addEventListener('click', handleCartClick);
+    }
+});
