@@ -129,9 +129,7 @@ async function updateOrderCart() {
         const resp = await fetch('api_order_cart.php?table=' + tableId, { cache: 'no-store' });
         const html = await resp.text();
         document.getElementById('cartWrapper').innerHTML = html;
-
-        attachCartEvents();
-
+        
         // Ödeme butonunun görünürlüğünü kontrol et
         updatePaymentButtonVisibility();
     } catch (err) {
@@ -178,38 +176,3 @@ function openAddProductModal(categoryId = 0) {
 }
 
 document.getElementById('openAddProduct').addEventListener('click', () => openAddProductModal());
-
-async function increaseCartItem(itemId) {
-    const formData = new FormData();
-    formData.append('table_id', tableId);
-    formData.append('item_id', itemId);
-
-    try {
-        const resp = await fetch('api_increase_item.php', {
-            method: 'POST',
-            body: formData
-        });
-        if (resp.ok) {
-            updateOrderCart();
-        } else {
-            alert('Ürün adedi artırılamadı');
-        }
-    } catch (err) {
-        console.error(err);
-        alert('Ürün adedi artırılırken hata oluştu');
-    }
-}
-
-function attachCartEvents() {
-    document.querySelectorAll('#cartWrapper .qty-btn.plus').forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            const itemId = this.dataset.itemId;
-            if (itemId) {
-                increaseCartItem(itemId);
-            }
-        });
-    });
-}
-
-document.addEventListener('DOMContentLoaded', attachCartEvents);
