@@ -130,8 +130,6 @@ async function updateOrderCart() {
         const html = await resp.text();
         document.getElementById('cartWrapper').innerHTML = html;
 
-        attachCartEvents();
-
         // Ödeme butonunun görünürlüğünü kontrol et
         updatePaymentButtonVisibility();
     } catch (err) {
@@ -200,16 +198,22 @@ async function increaseCartItem(itemId) {
     }
 }
 
-function attachCartEvents() {
-    document.querySelectorAll('#cartWrapper .qty-btn.plus').forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            const itemId = this.dataset.itemId;
-            if (itemId) {
-                increaseCartItem(itemId);
-            }
-        });
-    });
+
+// Sepet butonlari icin tek bir dinleyici kullan
+function handleCartClick(e) {
+    const btn = e.target.closest('.qty-btn.plus');
+    if (btn) {
+        e.preventDefault();
+        const itemId = btn.dataset.itemId;
+        if (itemId) {
+            increaseCartItem(itemId);
+        }
+    }
 }
 
-document.addEventListener('DOMContentLoaded', attachCartEvents);
+document.addEventListener('DOMContentLoaded', () => {
+    const wrapper = document.getElementById('cartWrapper');
+    if (wrapper) {
+        wrapper.addEventListener('click', handleCartClick);
+    }
+});
