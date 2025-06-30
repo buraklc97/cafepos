@@ -1,8 +1,5 @@
 <?php
 require __DIR__ . '/../config/init.php';
-
-$currentUrl = strtok($_SERVER['REQUEST_URI'], '?');
-
 $username = $_SESSION['username'] ?? '';
 $role     = $_SESSION['user_role'] ?? '';
 ?>
