@@ -3,6 +3,16 @@
 require __DIR__ . '/../config/init.php';
 require __DIR__ . '/../src/auth.php';
 
+// Kullanıcı zaten giriş yaptıysa rolüne göre yönlendir
+if (isLoggedIn()) {
+  if (currentUserRole() === 'Admin') {
+    header('Location: dashboard.php');
+  } else {
+    header('Location: pos.php');
+  }
+  exit;
+}
+
 $error = '';
 $rememberChecked = true; // Beni Hatırla varsayılan olarak işaretli
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
